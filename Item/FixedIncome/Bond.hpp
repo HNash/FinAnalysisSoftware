@@ -14,7 +14,6 @@ class Bond : public Item
         Bond(){};
         Bond(const string &n, double f, double cR, double cF, double t, double r) : Item(n), face(f), couponRate(cR/(100*cF)), couponFreq(cF),
             timeToMaturity(t*cF), interestRate(r/(100*cF)){};
-            //pow( (1 + (r/100)), (1/cF) ) - 1
         virtual ~Bond() {};
 
         virtual void calculatePrice();
