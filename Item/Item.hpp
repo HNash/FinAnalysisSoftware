@@ -7,17 +7,26 @@ using std::string;
 class Item
 {
     public:
-        // Constructors and destructor
+        //----------------------------------------CTORS & DTORS----------------------------------------
         Item(){};
         Item(const string& n) : name(n){};
         virtual ~Item(){};
-            
-        virtual void calculatePrice(){};
+        
+        //----------------------------------------METHODS----------------------------------------
+        virtual void calculateSpot(){}; // Inherited and implemented by derivative classes
+        virtual double getSpot(){return 0.0d;}; // Inherited and implemented by derivative classes
+        
+        double normalCDF(double);
+        
         //void save();
         //void remove();
+
+        string getName();
         
     protected:
+        //----------------------------------------FIELDS----------------------------------------
         string name;
+        double spotPrice = 0.0d;
 };
 
 
