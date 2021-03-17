@@ -1,6 +1,6 @@
 Financial analysis software for valuation of various securities.
 
-<h2>Methods</h2>
+<h2>Valuation Methods</h2>
 
 <b>Fixed Income Securities:</b>
 
