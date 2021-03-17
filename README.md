@@ -15,3 +15,8 @@ Financial analysis software for valuation of various securities.
 <ul>
 <li>European options are valued using the relevant Black-Scholes derived formula</li>
 </ul>
+
+<h2>Authors</h2>
+
+Hussam Elhamy Elnashar <br>
+Ahmed Yasser Mohammed <br>
