@@ -21,13 +21,17 @@ Financial analysis software for valuation of various securities.
 
 <b>For Fixed Income Securities:</b>
 
+<ul>
 <li>Price / Valuation</li>
 <li>Macaulay Duration</li>
 <li>Modified Duration</li>
+</ul>
 
 <b>For Options:</b>
 
+<ul>
 <li>Price / Valuation</li>
+</ul>
 
 <h2>Authors</h2>
 
