@@ -19,11 +19,9 @@ class CallableBond : public Bond
             Bond(n, f, cR, cF, t, r),
             callPrice(callP), 
             forwardVol(fVol), 
-            timeToCall(tToCall * cF){};
+            timeToCall(tToCall * cF){process();};
 
         virtual ~CallableBond() {};
-
-        virtual void process();
 
         //----------------------------------------GETTERS----------------------------------------
         double getEffectiveDur();
@@ -33,6 +31,8 @@ class CallableBond : public Bond
         double callPrice, timeToCall, forwardVol;
         double effectiveDur;
         //----------------------------------------METHODS----------------------------------------
+        virtual void process();
+
         virtual void calculateSpot(); // This will use both Bond::calculateSpot() and Bond::calculateForward in its implementation
         
         // The following methods are inherited from Bond but are not used, so the implementation is blank for safety
