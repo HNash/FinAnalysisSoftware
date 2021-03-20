@@ -7,7 +7,7 @@ Financial analysis software for valuation of various securities.
 <ul>
 <li>Plain vanilla bonds are valued with a Discounted Cash Flows (DCF) model.</li>
 <li>Callable bonds are valued by subtracting the price of the embedded call option, valued with the Black Model, from the corresponding non-callable DCF price of the bond.</li>
-<li>Flat-rate perpetuities are valued with a simple geometric summation f</li>
+<li>Flat-rate perpetuities are valued with a simple geometric summation.</li>
 <li>Zero-coupon bonds are valued by discounting the face value payment.</li>
 </ul>
 
