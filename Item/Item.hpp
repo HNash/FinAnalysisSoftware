@@ -13,11 +13,9 @@ class Item
         virtual ~Item(){};
         
         //----------------------------------------METHODS----------------------------------------
-        virtual void calculateSpot(){}; // Inherited and implemented by derivative classes
-        virtual double getSpot(){return 0.0d;}; // Inherited and implemented by derivative classes
-        
         double normalCDF(double);
         
+        virtual void process(){};
         //void save();
         //void remove();
 
@@ -26,7 +24,6 @@ class Item
     protected:
         //----------------------------------------FIELDS----------------------------------------
         string name;
-        double spotPrice = 0.0d;
 };
 
 

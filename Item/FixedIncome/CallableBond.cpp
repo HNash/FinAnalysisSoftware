@@ -4,30 +4,57 @@
 using std::string;
 
 //----------------------------------------PRICE CALCULATIONS----------------------------------------
-// Implementation of Black Model formula for price of embedded call option
 void CallableBond::calculateSpot()
 {
-    Bond *intermediate = new Bond("Intermediate", this->face, this->couponRate, this->couponFreq, this->timeToMaturity, this->interestRate);
-    intermediate->calculateForward(this->timeToCall);
-    double interSpot = intermediate->getSpot();
-    double interForward = intermediate->getForward();
-
-    double d1 = (log(interForward / this->callPrice) + ((pow(this->forwardVol, 2) / 2) * this->timeToCall))  / 
-                    (this->forwardVol * pow(this->timeToCall, 0.5));
-
-    double d2 = d1 - (this->forwardVol * pow(this->timeToCall, 0.5));
+    // Price of callable = Price of vanilla - Price of embedded option
+    Bond::calculateSpot(); // Set spotPrice using vanilla bond formula
+    Bond::calculateForward(timeToCall); // Set forwardPrice using vanilla bond formula
     
+    // Calculating the different components of the Black model formula for embedded bond option price
+    double d1 = (log(forwardPrice/callPrice)+((pow(forwardVol,2)/2)*timeToCall))/(forwardVol*pow(timeToCall,0.5));
+    double d2 = d1 - (forwardVol * pow(timeToCall, 0.5));
 
-    double embeddedCallSpot = exp(-1 * this->interestRate * this->timeToCall) * ( (interForward * normalCDF(d1)) - (this->callPrice * normalCDF(d2)));
+    // Black model formula for price of bond option
+    double embeddedCallSpot = exp(-1 * interestRate * timeToCall) * ( (forwardPrice * normalCDF(d1)) - (callPrice * normalCDF(d2)));
 
+    // Spot price is calculated by subtracting price of embedded option from corresponding vanilla bond price
+    spotPrice -= embeddedCallSpot;
+}
 
-    spotPrice = interSpot - embeddedCallSpot;
+void CallableBond::calculateEffectiveDur()
+{
+    // Saving the value of interest rate and current price in temporary variables
+    double saveR = interestRate;
+    double saveP = spotPrice;
 
-    delete intermediate;
+    // Calculating price if the interest rate falls to 0.5% below original value
+    interestRate -= 0.005;
+    calculateSpot();
+    double vDown = spotPrice;
+
+    // Calculating price if the interest rate rises to 0.5% above original value
+    interestRate += 0.01;
+    calculateSpot();
+    double vUp = spotPrice;
+
+    // Restoring original value of interest rate and spot price
+    interestRate = saveR;
+    spotPrice = saveP;
+
+    // Calculating effective duration
+    effectiveDur = (vDown - vUp) / (2 * spotPrice * 0.005);
 }
 
 //----------------------------------------GETTERS----------------------------------------
-double CallableBond::getSpot()
+double CallableBond::getEffectiveDur()
 {
-    return this->spotPrice;
+    return effectiveDur;
 }
+
+//----------------------------------------PROCESS----------------------------------------
+void CallableBond::process()
+{
+    calculateSpot();
+    calculateEffectiveDur();
+}
+
