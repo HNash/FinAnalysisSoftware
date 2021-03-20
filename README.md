@@ -15,6 +15,7 @@ Financial analysis software for valuation of various securities.
 
 <ul>
 <li>European options are valued using the relevant Black-Scholes derived formula.</li>
+<li>American options are valued using a trinomial tree estimate of the Black-Scholes price.</li>
 </ul>
 
 <h2>Values Calculated</h2>
