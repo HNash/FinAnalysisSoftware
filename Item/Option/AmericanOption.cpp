@@ -13,7 +13,7 @@ void AmericanOption::calculateSpot()
     const double r = exp(interestRate * delta);
 
     // Up, down and flat movement multipliers for stock price
-    const double u = exp(sqrt(2 * delta));
+    const double u = exp(volatility * sqrt(2 * delta));
     const double d = 1 / u;
     const double m = 1;
 
@@ -36,7 +36,7 @@ void AmericanOption::calculateSpot()
         payoffs[i] = payoff(sT);
     }
 
-    payoffs[steps] = stockPrice;
+    payoffs[steps] = payoff(stockPrice);
 
     for(int i = steps+1; i < (2*steps) + 1; ++i)
     {
@@ -50,9 +50,8 @@ void AmericanOption::calculateSpot()
         //This iterates down the previous time step, calculating the E(payoff) at each node and saving it
         for(int i = 0; i < n-2; ++i)
         {
-            double payoffHold = (pu * payoffs[i]) + (pm * payoffs[i+1]) + (pd * payoffs[i+2]);
+            double payoffHold = ((pu * payoffs[i]) + (pm * payoffs[i+1]) + (pd * payoffs[i+2])) / r;
             double payoffExercise = payoffs[i+1];
-
             payoffs[i] = fmax(payoffHold, payoffExercise);
         }
     }

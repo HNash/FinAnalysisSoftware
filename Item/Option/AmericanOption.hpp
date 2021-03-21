@@ -13,8 +13,8 @@ class AmericanOption : public Item
             stockPrice(s0),
             strike(k),
             timeToExpiry(t),
-            interestRate(r),
-            volatility(vol),
+            interestRate(r/100),
+            volatility(vol/100),
             steps(steps),
             callOrPut(call ? 1.0 : -1.0){process();};
 

@@ -31,7 +31,7 @@ int main()
     std::cout << "\tMacaulay Duration: " << p->getMacDur() << "\n";
     std::cout << "\tModified Duration: " << p->getModDur() << "\n\n";
 
-    AmericanOption *ao = new AmericanOption("A. option", 100, 150, 2, 1.5, 5, 1000, true);
+    AmericanOption *ao = new AmericanOption("A. option", 38.15, 39, 0.0822, 0.25, 24.55, 10, true);
     std::cout << "American Option - \n";
     std::cout << "\tPrice: " << ao->getSpot() << "\n\n";
     std::cout << std::endl;
