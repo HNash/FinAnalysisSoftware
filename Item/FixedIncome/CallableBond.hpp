@@ -29,7 +29,7 @@ class CallableBond : public Bond
     protected:
         //----------------------------------------FIELDS----------------------------------------
         double callPrice, timeToCall, forwardVol;
-        double effectiveDur;
+        double effectiveDur = 0.0;
         //----------------------------------------METHODS----------------------------------------
         virtual void process();
 

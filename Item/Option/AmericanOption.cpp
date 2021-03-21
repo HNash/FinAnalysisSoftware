@@ -1,6 +1,7 @@
 #include "AmericanOption.hpp"
 #include <cmath>
 
+//----------------------------------------PRICE CALCULATIONS----------------------------------------
 double AmericanOption::payoff(double sT)
 {
     return fmax( (callOrPut * (sT - strike)) , 0);
@@ -59,11 +60,13 @@ void AmericanOption::calculateSpot()
     spotPrice = payoffs[0];     
 }
 
+//----------------------------------------GETTERS----------------------------------------
 double AmericanOption::getSpot()
 {
     return spotPrice;
 }
 
+//----------------------------------------PROCESS----------------------------------------
 void AmericanOption::process()
 {
     calculateSpot();

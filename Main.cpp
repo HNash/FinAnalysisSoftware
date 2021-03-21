@@ -1,6 +1,7 @@
 #include "Item/Item.hpp"
 #include "Item/FixedIncome/Bond.hpp"
 #include "Item/FixedIncome/CallableBond.hpp"
+#include "Item/FixedIncome/ConvertibleBond.hpp"
 #include "Item/FixedIncome/ZeroCouponBond.hpp"
 #include "Item/FixedIncome/Perpetuity.hpp"
 #include "Item/Option/AmericanOption.hpp"
@@ -19,6 +20,11 @@ int main()
     std::cout << "\tPrice: " << cb->getSpot() << "\n";
     std::cout << "\tEffective Duration: " << cb->getEffectiveDur() << "\n\n";
 
+    ConvertibleBond *cvb = new ConvertibleBond("convertible", 100, 10, 2, 10, 1.5, 100, 150, 20);
+    std::cout << "Convertible Bond - \n";
+    std::cout << "\tPrice: " << cvb->getSpot() << "\n";
+    std::cout << "\tEffective Duration: " << cvb->getEffectiveDur() << "\n\n";
+
     ZeroCouponBond *zcb = new ZeroCouponBond("zero coupon", 100, 10, 1.5);
     std::cout << "Zero Coupon Bond - \n";
     std::cout << "\tPrice: " << zcb->getSpot() << "\n";
@@ -31,8 +37,9 @@ int main()
     std::cout << "\tMacaulay Duration: " << p->getMacDur() << "\n";
     std::cout << "\tModified Duration: " << p->getModDur() << "\n\n";
 
-    AmericanOption *ao = new AmericanOption("A. option", 38.15, 39, 0.0822, 0.25, 24.55, 10, true);
+    AmericanOption *ao = new AmericanOption("A. option", 100, 150, 10, 1.5, 20, 1000, true);
     std::cout << "American Option - \n";
     std::cout << "\tPrice: " << ao->getSpot() << "\n\n";
+
     std::cout << std::endl;
 }
