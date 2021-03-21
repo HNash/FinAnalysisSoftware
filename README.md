@@ -1,3 +1,4 @@
+<img src="logo_square.png" alt="Logo" style="width:200px;height:200px;">
 Financial analysis software for valuation of various securities.
 
 <h2>Valuation Methods</h2>
