@@ -18,7 +18,7 @@ class CallableBond : public Bond
         CallableBond(const string &n, double f, double cR, double cF, double t, double r, double callP, double fVol, double tToCall) : 
             Bond(n, f, cR, cF, t, r),
             callPrice(callP), 
-            forwardVol(fVol), 
+            forwardVol(fVol * (pow(1 / (cF), 0.5))  ), // fVol is annualized forward volatility.
             timeToCall(tToCall * cF){process();};
 
         virtual ~CallableBond() {};
