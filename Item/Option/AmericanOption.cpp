@@ -59,3 +59,13 @@ void AmericanOption::calculateSpot()
 
     spotPrice = payoffs[0];     
 }
+
+double AmericanOption::getSpot()
+{
+    return spotPrice;
+}
+
+void AmericanOption::process()
+{
+    calculateSpot();
+}

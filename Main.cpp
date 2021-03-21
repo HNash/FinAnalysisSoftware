@@ -3,6 +3,7 @@
 #include "Item/FixedIncome/CallableBond.hpp"
 #include "Item/FixedIncome/ZeroCouponBond.hpp"
 #include "Item/FixedIncome/Perpetuity.hpp"
+#include "Item/Option/AmericanOption.hpp"
 #include <iostream>
 
 int main()
@@ -28,7 +29,10 @@ int main()
     std::cout << "Perpetuity - \n";
     std::cout << "\tPrice: " << p->getSpot() << "\n";
     std::cout << "\tMacaulay Duration: " << p->getMacDur() << "\n";
-    std::cout << "\tModified Duration: " << p->getModDur() << "\n";
+    std::cout << "\tModified Duration: " << p->getModDur() << "\n\n";
 
+    AmericanOption *ao = new AmericanOption("A. option", 100, 150, 2, 1.5, 5, 1000, true);
+    std::cout << "American Option - \n";
+    std::cout << "\tPrice: " << ao->getSpot() << "\n\n";
     std::cout << std::endl;
 }

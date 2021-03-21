@@ -16,7 +16,9 @@ class AmericanOption : public Item
             interestRate(r),
             volatility(vol),
             steps(steps),
-            callOrPut(call ? 1.0 : -1.0){};
+            callOrPut(call ? 1.0 : -1.0){process();};
+
+        double getSpot();
 
     protected:
         double stockPrice, strike, timeToExpiry, interestRate, volatility;
@@ -26,6 +28,8 @@ class AmericanOption : public Item
 
         double payoff(double);
         void calculateSpot();
+
+        void process();
 };
 
 #endif
