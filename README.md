@@ -26,6 +26,7 @@ Financial analysis software for valuation of various securities.
 <li>Price / Valuation</li>
 <li>Macaulay Duration</li>
 <li>Modified Duration</li>
+<li>Effective Duration</li>
 </ul>
 
 <b>For Options:</b>
