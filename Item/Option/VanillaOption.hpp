@@ -1,16 +1,16 @@
-#ifndef Option_hpp
-#define Option_hpp
+#ifndef VanillaOption_hpp
+#define VanillaOption_hpp
 #include "../Item.hpp"
 #include <cmath>
 #include <string>
 using std::string;
 
-class Option : public Item
+class VanillaOption : public Item
 {
     public:
         //----------------------------------------CTORS & DTORS----------------------------------------
-        Option(){};
-        Option(const string &n, double s0, double k, double t, double r, double vol, int steps, bool call) :
+        VanillaOption(){};
+        VanillaOption(const string &n, double s0, double k, double t, double r, double vol, int steps, bool call) :
             Item(n),
             stockPrice(s0),
             strike(k),
@@ -19,7 +19,7 @@ class Option : public Item
             volatility(vol/100),
             steps(steps),
             callOrPut(call ? 1.0 : -1.0){};
-        virtual ~Option(){};
+        virtual ~VanillaOption(){};
 
         //----------------------------------------GETTERS----------------------------------------
         double getSpot();

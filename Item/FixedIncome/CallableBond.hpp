@@ -5,6 +5,7 @@
 #include <string>
 #include "../Item.hpp"
 #include "Bond.hpp"
+#include "../Option/BondOption.hpp"
 using std::string;
 
 // Derived class from Bond
@@ -30,6 +31,7 @@ class CallableBond : public Bond
         //----------------------------------------FIELDS----------------------------------------
         double callPrice, timeToCall, forwardVol;
         double effectiveDur = 0.0;
+        BondOption *embeddedOption = nullptr;
         //----------------------------------------METHODS----------------------------------------
         virtual void process();
 

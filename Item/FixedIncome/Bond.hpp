@@ -17,6 +17,7 @@ class Bond : public Item
             Item(n), 
             face(f), 
             couponRate(cR/(100*cF)),
+            couponFreq(cF),
             timeToMaturity(t*cF), 
             interestRate(r/(100*cF)){process();};
 
@@ -31,7 +32,7 @@ class Bond : public Item
 
     protected:
         //----------------------------------------FIELDS----------------------------------------
-        double face, couponRate, timeToMaturity, interestRate;
+        double face, couponRate, couponFreq, timeToMaturity, interestRate;
         double spotPrice = 0.0, forwardPrice = 0.0; 
         double macDur = 0.0, modDur = 0.0;
 

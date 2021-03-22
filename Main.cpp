@@ -4,7 +4,7 @@
 #include "Item/FixedIncome/ConvertibleBond.hpp"
 #include "Item/FixedIncome/ZeroCouponBond.hpp"
 #include "Item/FixedIncome/Perpetuity.hpp"
-#include "Item/Option/Option.hpp"
+#include "Item/Option/VanillaOption.hpp"
 #include "Item/Option/AmericanOption.hpp"
 #include "Item/Option/EuropeanOption.hpp"
 #include <iostream>
@@ -17,7 +17,7 @@ int main()
     std::cout << "\tMacaulay Duration: " << b->getMacDur() << "\n";
     std::cout << "\tModified Duration: " << b->getModDur() << "\n\n";
 
-    CallableBond *cb = new CallableBond("callable", 100, 10, 2, 10, 1.5, 105, 1, 8);
+    CallableBond *cb = new CallableBond("callable", 100, 10, 2, 10, 1.5, 120, 20, 5);
     std::cout << "Callable Bond - \n";
     std::cout << "\tPrice: " << cb->getSpot() << "\n";
     std::cout << "\tEffective Duration: " << cb->getEffectiveDur() << "\n\n";

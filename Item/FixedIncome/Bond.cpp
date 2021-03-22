@@ -13,22 +13,21 @@ void Bond::calculateSpot()
 // t is the time to forward date before maturity
 void Bond::calculateForward(double t)
 {
+    t *= couponFreq;
+    double couponPmt = (face * couponRate);
     double couponsValue = 0.0;
-    double couponPmt = face * couponRate;
 
-    //timeToMaturity is not in years, it is in coupon payment periods
-    for(double i = 0; i < t; ++i)
+    for(int i = 0; i < t; ++i)
     {
-        couponsValue += couponPmt * exp(interestRate * (timeToMaturity - i));
+        couponsValue += couponPmt / (pow((1+interestRate), (i+1)));
     }
 
     if(spotPrice == 0.0)
     {
         calculateSpot();
     }
-
-    // Proceeds method formula for forward price
-    forwardPrice = (spotPrice * exp(interestRate * timeToMaturity)) - couponsValue;
+    
+    forwardPrice = (spotPrice - couponsValue) * exp(interestRate * t);
 }
 
 //----------------------------------------DURATION CALCULATIONS----------------------------------------
