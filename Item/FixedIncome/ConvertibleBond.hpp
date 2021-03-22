@@ -14,12 +14,14 @@ class ConvertibleBond : public Bond
 {
     public:
         //----------------------------------------CTORS & DTORS----------------------------------------
+        ConvertibleBond(){};
         ConvertibleBond(const string &n, double f, double cR, double cF, double t, double r, double s0, double conversionP, double vol) :
         Bond(n, f, cR, cF, t, r),
         couponFreq(cF),
         stockPrice(s0),
         conversionP(conversionP),
         vol(vol){process();};
+        virtual ~ConvertibleBond(){};
 
         //----------------------------------------GETTERS----------------------------------------
         double getSpot();

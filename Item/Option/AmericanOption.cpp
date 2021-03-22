@@ -2,11 +2,6 @@
 #include <cmath>
 
 //----------------------------------------PRICE CALCULATIONS----------------------------------------
-double AmericanOption::payoff(double sT)
-{
-    return fmax( (callOrPut * (sT - strike)) , 0);
-}
-
 void AmericanOption::calculateSpot()
 {
     // Parameters of trinomial model
@@ -58,12 +53,6 @@ void AmericanOption::calculateSpot()
     }
 
     spotPrice = payoffs[0];     
-}
-
-//----------------------------------------GETTERS----------------------------------------
-double AmericanOption::getSpot()
-{
-    return spotPrice;
 }
 
 //----------------------------------------PROCESS----------------------------------------

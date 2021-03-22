@@ -4,7 +4,9 @@
 #include "Item/FixedIncome/ConvertibleBond.hpp"
 #include "Item/FixedIncome/ZeroCouponBond.hpp"
 #include "Item/FixedIncome/Perpetuity.hpp"
+#include "Item/Option/Option.hpp"
 #include "Item/Option/AmericanOption.hpp"
+#include "Item/Option/EuropeanOption.hpp"
 #include <iostream>
 
 int main()
@@ -37,9 +39,13 @@ int main()
     std::cout << "\tMacaulay Duration: " << p->getMacDur() << "\n";
     std::cout << "\tModified Duration: " << p->getModDur() << "\n\n";
 
-    AmericanOption *ao = new AmericanOption("A. option", 100, 150, 10, 1.5, 20, 1000, true);
+    AmericanOption *ao = new AmericanOption("A. option", 100, 150, 3, 1.5, 50, 1000, true);
     std::cout << "American Option - \n";
     std::cout << "\tPrice: " << ao->getSpot() << "\n\n";
+
+    EuropeanOption *eo = new EuropeanOption("E. option", 100, 150, 3, 1.5, 50, 1000, true);
+    std::cout << "European Option - \n";
+    std::cout << "\tPrice: " << eo->getSpot() << "\n\n";    
 
     std::cout << std::endl;
 }
