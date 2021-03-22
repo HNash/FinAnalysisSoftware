@@ -6,7 +6,8 @@
 
 <ul>
 <li>Plain vanilla bonds are valued with a Discounted Cash Flows (DCF) model.</li>
-<li>Callable bonds are valued by subtracting the price of the embedded call option, valued with the Black Model, from the corresponding non-callable DCF price of the bond.</li>
+<li>Callable bonds are valued by subtracting the price of the embedded bond call option, valued with the Black Model, from the corresponding non-callable DCF price of the bond.</li>
+<li>Convertible bonds are valued by adding the price of the embedded American stock call option, valued with the trinomial tree estimate of the Black-Scholes price, to the corresponding non-convertible DCF price of the bond.</li>  
 <li>Flat-rate perpetuities are valued with a simple geometric summation.</li>
 <li>Zero-coupon bonds are valued by discounting the face value payment.</li>
 </ul>
@@ -24,9 +25,9 @@
 
 <ul>
 <li>Price / Valuation</li>
-<li>Macaulay Duration</li>
-<li>Modified Duration</li>
-<li>Effective Duration</li>
+<li>Macaulay Duration (where applicable)</li>
+<li>Modified Duration (where applicable)</li>
+<li>Effective Duration, calculated with the Finite Difference Method (where applicable)</li>
 </ul>
 
 <b>For Options:</b>
