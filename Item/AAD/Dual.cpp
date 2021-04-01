@@ -106,8 +106,3 @@ ostream& operator<<(ostream& os, const Dual& argument) {
         os << argument.real << std::endl;
     return os;
 }
-
-
-
-
-
