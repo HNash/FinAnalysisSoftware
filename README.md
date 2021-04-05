@@ -1,5 +1,8 @@
 <img src="logo.png" alt="Logo" class="center">
 
+<h2>Download</h2>
+<a href="https://github.com/HNash/OpenAssetPricer/releases/download/v0.1/OpenAssetPricer.exe">Download link</a> for the latest (pre-)release.
+
 <h2>Valuation Methods</h2>
 
 <b>Fixed Income Securities:</b>
