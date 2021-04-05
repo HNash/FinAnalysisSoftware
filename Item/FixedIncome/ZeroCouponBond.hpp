@@ -13,8 +13,20 @@ class ZeroCouponBond : public Bond
     public:
         //----------------------------------------CTORS & DTORS----------------------------------------
         ZeroCouponBond(){};
-        ZeroCouponBond(const string &n, double f, double t, double r) : Bond(n, f, 0.0, 1.0, t, r){process();};
+        // Name, face value, time to maturity, interest rate
+        ZeroCouponBond(vector<string> inputs) :
+            Bond(inputs[0], stod(inputs[1]), 0.0, 1.0, stod(inputs[2]), stod(inputs[3])){process();};
+        static Item* factory(vector<string> inputs)
+        {
+            return new ZeroCouponBond(inputs);
+        }
         virtual ~ZeroCouponBond() {};
+
+        // GUI setup
+        static constexpr int ZCB_PARAM_COUNT = 4;
+        static string ZCB_PARAM_NAMES[ZCB_PARAM_COUNT];        
+
+        vector<string> getResults();
 
     protected:
         //----------------------------------------METHODS----------------------------------------

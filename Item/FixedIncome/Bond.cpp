@@ -2,6 +2,9 @@
 #include <cmath>
 #include <iostream>
 
+string Bond::BOND_PARAM_NAMES[6] = { "Name: ", "Face Value: ", "Annual Coupon Rate (%): ", "Coupon Frequency (Per Yr): ",
+            "Time to Maturity (Yrs): ", "Annual Interest Rate (%)" };
+
 //----------------------------------------PRICE CALCULATIONS----------------------------------------
 void Bond::calculateSpot()
 {
@@ -68,6 +71,15 @@ void Bond::process()
 }
 
 //----------------------------------------GETTERS----------------------------------------
+vector<string> Bond::getResults()
+{
+    vector<string> vec;
+    vec.push_back(string("Price: ") + std::to_string(spotPrice));
+    vec.push_back(string("Macaulay Duration: ") + std::to_string(macDur));
+    vec.push_back(string("Modified Duration: ") + std::to_string(modDur));
+    return vec;
+}
+
 double Bond::getSpot()
 {
     return spotPrice;

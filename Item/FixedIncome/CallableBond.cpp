@@ -4,6 +4,9 @@
 #include <iostream>
 using std::string;
 
+string CallableBond::CALLABLE_PARAM_NAMES[9] = { "Name: ", "Face Value: ", "Annual Coupon Rate (%): ", "Coupon Frequency (Per Yr): ",
+            "Time to Maturity (Yrs): ", "Annual Interest Rate (%)", "Call Price: ",  "Forward Price Volatility (%): ", "Time to Call: " };
+
 //----------------------------------------PRICE CALCULATIONS----------------------------------------
 void CallableBond::calculateSpot()
 {
@@ -45,6 +48,15 @@ void CallableBond::calculateEffectiveDur()
 }
 
 //----------------------------------------GETTERS----------------------------------------
+vector<string> CallableBond::getResults()
+{
+    vector<string> results;
+    results.push_back(string("Price: ") + std::to_string(spotPrice));
+    results.push_back(string("Macaulay Duration: ") + std::to_string(macDur));
+    results.push_back(string("Modified Duration: ") + std::to_string(modDur));
+    return results;
+}
+
 double CallableBond::getEffectiveDur()
 {
     return effectiveDur;

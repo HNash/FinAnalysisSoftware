@@ -2,6 +2,9 @@
 #define Item_hpp
 
 #include <string>
+#include <vector>
+
+using std::vector;
 using std::string;
 
 class Item
@@ -20,6 +23,7 @@ class Item
         //void remove();
 
         string getName();
+        virtual vector<string> getResults() { vector<string> vec; return vec; };
         
     protected:
         //----------------------------------------FIELDS----------------------------------------

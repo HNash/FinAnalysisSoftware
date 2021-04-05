@@ -5,6 +5,7 @@
 #include <string>
 #include "../Item.hpp"
 using std::string;
+using std::stod;
 
 // Derived class from Bond
 class Perpetuity : public Item
@@ -12,8 +13,21 @@ class Perpetuity : public Item
     public:
         //----------------------------------------CTORS & DTORS----------------------------------------
         Perpetuity(){};
-        Perpetuity(const string &n, double pmt, double r) : Item(n), payment(pmt), interestRate(r){process();};
+        Perpetuity(vector<string> inputs) :
+            Item(inputs[0]),
+            payment(stod(inputs[1])),
+            interestRate(stod(inputs[2]) / 100.0) {process();};
+        static Item* factory(vector<string> inputs)
+        {
+            return new Perpetuity(inputs);
+        }
         virtual ~Perpetuity() {};
+
+        // GUI setup
+        static constexpr int PERP_PARAM_COUNT = 3;
+        static string PERP_PARAM_NAMES[PERP_PARAM_COUNT];
+
+        vector<string> getResults();
 
         double getSpot();
         double getMacDur();

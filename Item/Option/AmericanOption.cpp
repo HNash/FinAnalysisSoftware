@@ -23,7 +23,7 @@ void AmericanOption::calculateSpot()
     const double pm = 1 - pu - pd;
 
     // An array that (at first) represents all the final nodes/leaves of the trinomial tree of stock option payoffs
-    double payoffs[(2 * steps)+ 1];
+    double *payoffs = new double[(2 * steps)+ 1];
     
     // The two for loops and statement in between fill in the array with all the possible last period payoffs of the option
     for(int i = 0; i < steps; ++i)
