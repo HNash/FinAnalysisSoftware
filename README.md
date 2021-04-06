@@ -1,7 +1,7 @@
 <img src="logo.png" alt="Logo" class="center">
 
 <h2>Download</h2>
-<a href="https://github.com/HNash/OpenAssetPricer/releases/download/v0.2/OpenAssetPricer.exe">Download link</a> for the latest (pre-)release.
+<a href="https://github.com/HNash/OpenAssetPricer/releases/download/v0.2/OpenAssetPricer.exe">Download link</a> for the latest pre-release (v0.2).
 
 <h2>Valuation Methods</h2>
 
