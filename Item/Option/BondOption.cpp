@@ -12,6 +12,13 @@ void BondOption::calculateSpot()
 }
 
 //----------------------------------------GETTERS----------------------------------------
+vector<string> BondOption::getResults()
+{
+    vector<string> results;
+    results.push_back(string("price") + std::to_string(spotPrice));
+    return results;
+}
+
 double BondOption::getSpot()
 {
     return spotPrice;

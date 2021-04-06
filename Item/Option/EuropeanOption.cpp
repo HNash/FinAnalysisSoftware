@@ -1,6 +1,9 @@
 #include "EuropeanOption.hpp"
 #include <cmath>
 
+string EuropeanOption::EUROPT_PARAM_NAMES[EUROPT_PARAM_COUNT] = { "Name: ", "Stock Price: ", "Strike Price: ", "Time to Expiry (Yrs): ", "Annual Interest Rate (%): ",
+                                                                        "Annual Volatility (%): ", "Desired Time Steps: ", "Put? " };
+
 //----------------------------------------PRICE CALCULATIONS----------------------------------------
 void EuropeanOption::calculateSpot()
 {

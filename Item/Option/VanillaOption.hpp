@@ -2,7 +2,9 @@
 #define VanillaOption_hpp
 #include "../Item.hpp"
 #include <cmath>
+#include <vector>
 #include <string>
+using std::vector;
 using std::string;
 
 class VanillaOption : public Item
@@ -31,8 +33,11 @@ class VanillaOption : public Item
         double callOrPut; // Multiplier to determine whether payoff uses ST - k or k - ST
         double spotPrice = 0.0;
 
+        vector<string> getResults();
+
         //----------------------------------------METHODS----------------------------------------
         double payoff(double);
+
         virtual void calculateSpot(){};
 
         virtual void process(){};

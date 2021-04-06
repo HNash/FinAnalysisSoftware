@@ -1,6 +1,9 @@
 #include "AmericanOption.hpp"
 #include <cmath>
 
+string AmericanOption::AMOPT_PARAM_NAMES[AMOPT_PARAM_COUNT] = { "Name: ", "Stock Price: ", "Strike Price: ", "Time to Expiry (Yrs): ", "Annual Interest Rate (%): ",
+                                                                        "Annual Volatility (%): ", "Desired Time Steps: ", "Put? " };
+
 //----------------------------------------PRICE CALCULATIONS----------------------------------------
 void AmericanOption::calculateSpot()
 {
