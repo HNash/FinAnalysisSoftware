@@ -12,8 +12,8 @@ class VanillaOption : public Item
     public:
         //----------------------------------------CTORS & DTORS----------------------------------------
         VanillaOption(){};
-        VanillaOption(const string &n, double s0, double k, double t, double r, double vol, int steps, bool call) :
-            Item(n),
+        VanillaOption(vector<string> inputs, double s0, double k, double t, double r, double vol, int steps, bool call) :
+            Item(inputs),
             stockPrice(s0),
             strike(k),
             timeToExpiry(t),

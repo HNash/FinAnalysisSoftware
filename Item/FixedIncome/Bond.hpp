@@ -3,9 +3,11 @@
 
 #include <cmath>
 #include <string>
+#include <vector>
 #include <map>
 #include "../Item.hpp"
 using std::string;
+using std::vector;
 using std::map;
 using std::stod;
 
@@ -18,14 +20,15 @@ class Bond : public Item
         // Calls superclass constructor for name. Coupon rate, time to maturity and interest rate are adjusted to account for coupon frequency
         // Input array: name, face, coupon rate, coupon frequency, time to maturity, interest rate
         Bond(vector<string> inputs) :
-            Item(inputs.at(0)),
+            Item(inputs),
             face(stod(inputs.at(1))),
             couponRate(  stod(inputs.at(2)) / (100 * stod(inputs.at(3)))  ),
             couponFreq(stod(inputs.at(3))),
             timeToMaturity(stod(inputs.at(4)) * stod(inputs.at(3))),
             interestRate(stod(inputs.at(5)) / (100 * stod(inputs.at(3)))) {process();};
-        Bond(const string &n, double f, double cR, double cF, double t, double r) : 
-            Item(n), 
+
+        Bond(vector<string> inputs, double f, double cR, double cF, double t, double r) : 
+            Item(inputs), 
             face(f), 
             couponRate(cR/(100*cF)),
             couponFreq(cF),

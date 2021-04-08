@@ -15,7 +15,7 @@ class ZeroCouponBond : public Bond
         ZeroCouponBond(){};
         // Name, face value, time to maturity, interest rate
         ZeroCouponBond(vector<string> inputs) :
-            Bond(inputs[0], stod(inputs[1]), 0.0, 1.0, stod(inputs[2]), stod(inputs[3])){process();};
+            Bond(inputs, stod(inputs[1]), 0.0, 1.0, stod(inputs[2]), stod(inputs[3])){process();};
         static Item* factory(vector<string> inputs)
         {
             return new ZeroCouponBond(inputs);

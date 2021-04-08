@@ -3,7 +3,7 @@
 #include <iostream>
 
 string Bond::BOND_PARAM_NAMES[6] = { "Name: ", "Face Value: ", "Annual Coupon Rate (%): ", "Coupon Frequency (Per Yr): ",
-            "Time to Maturity (Yrs): ", "Annual Interest Rate (%)" };
+            "Time to Maturity (Yrs): ", "Annual Interest Rate (%): " };
 
 //----------------------------------------PRICE CALCULATIONS----------------------------------------
 void Bond::calculateSpot()

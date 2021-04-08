@@ -19,7 +19,7 @@ class ConvertibleBond : public Bond
         
         // Input array: name, face, coupon rate, coupon frequency, time to maturity, interest rate, stock price, conversion price, volatility
         ConvertibleBond(vector<string> inputs) :
-            Bond(inputs[0], stod(inputs[1]), stod(inputs[2])/(100*stod(inputs[3])), stod(inputs[3]), stod(inputs[4])* stod(inputs[3]), stod(inputs[5])/(100*stod(inputs[3]))),
+            Bond(inputs, stod(inputs[1]), stod(inputs[2])/(100*stod(inputs[3])), stod(inputs[3]), stod(inputs[4])* stod(inputs[3]), stod(inputs[5])/(100*stod(inputs[3]))),
             stockPrice (stod(inputs[6])),
             conversionP (stod(inputs[7])),
             vol (stod(inputs[8])){process();};

@@ -14,9 +14,9 @@ class EuropeanOption : public VanillaOption
         //----------------------------------------CTORS & DTORS----------------------------------------
         EuropeanOption(){};
         EuropeanOption(vector<string> inputs) :
-            VanillaOption(inputs[0], stod(inputs[1]), stod(inputs[2]), stod(inputs[3]), stod(inputs[4]), stod(inputs[5]), stoi(inputs[6]), stoi(inputs[7])) {process();};
+            VanillaOption(inputs, stod(inputs[1]), stod(inputs[2]), stod(inputs[3]), stod(inputs[4]), stod(inputs[5]), stoi(inputs[6]), stoi(inputs[7])) {process();};
         EuropeanOption(const string &n, double s0, double k, double t, double r, double vol, int steps, bool call) :
-            VanillaOption(n, s0, k, t, r, vol, steps, call){process();};
+            VanillaOption(vector<string>{ "" }, s0, k, t, r, vol, steps, call) {process();};
         static Item* factory(vector<string> inputs)
         {
             return new EuropeanOption(inputs);

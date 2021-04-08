@@ -13,22 +13,21 @@ class BondOption : public Item
         //----------------------------------------CTORS & DTORS----------------------------------------
         BondOption(){};
         BondOption(vector<string> inputs) :
-            Item(inputs[0]),
+            Item(inputs),
             forwardPrice(stod(inputs[1])),
             callPrice(stod(inputs[2])),
             forwardVol(stod(inputs[3]) / 100.0),
             timeToCall(stod(inputs[4])),
             interestRate(stod(inputs[5]) / 100.0),
-            callOrPut(stoi(inputs[6]) ? 1.0 : -1.0) {process();};
-
-        BondOption(const string &n, double fP, double cP, double fVol, double tToCall, double r, bool call) :
-            Item(n),
+            callOrPut(stod(inputs[6]) ? 1.0 : -1.0) {process();};
+        BondOption(const string& n, double fP, double cP, double fVol, double tToCall, double r, double call) :
+            Item(vector<string>{""}),
             forwardPrice(fP),
             callPrice(cP),
             forwardVol(fVol),
             timeToCall(tToCall),
-            interestRate(r),
-            callOrPut(call ? 1.0 : -1.0){process();};
+            interestRate(r / 100),
+            callOrPut(call ? 1.0 : -1.0) {process();};
 
         static Item* factory(vector<string> inputs)
         {
@@ -36,6 +35,10 @@ class BondOption : public Item
         }
 
         virtual ~BondOption() {};
+
+        // GUI setup
+        static constexpr int BONDOPT_PARAM_COUNT = 7;
+        static string BONDOPT_PARAM_NAMES[BONDOPT_PARAM_COUNT];
 
         vector<string> getResults();
         double getSpot();

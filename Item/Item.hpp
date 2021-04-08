@@ -12,7 +12,9 @@ class Item
     public:
         //----------------------------------------CTORS & DTORS----------------------------------------
         Item(){};
-        Item(const string& n) : name(n){};
+        Item(vector<string> inputs) : 
+            name(inputs[0]),
+            parameters(inputs){};
         virtual ~Item(){};
         
         //----------------------------------------METHODS----------------------------------------
@@ -23,11 +25,13 @@ class Item
         //void remove();
 
         string getName();
-        virtual vector<string> getResults() { vector<string> vec; return vec; };
+        vector<string> getParams() { return parameters; }; // Returns the params used to create this Item
+        virtual vector<string> getResults() { vector<string> vec; return vec; }; // Implemented by derived classes
         
     protected:
         //----------------------------------------FIELDS----------------------------------------
         string name;
+        vector<string> parameters; // The input params used to create this Item
 };
 
 

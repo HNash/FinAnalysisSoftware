@@ -17,16 +17,10 @@ class CallableBond : public Bond
         //----------------------------------------CTORS & DTORS----------------------------------------
         CallableBond(){};
         CallableBond(vector<string> inputs) :
-            Bond(inputs.at(0), stod(inputs.at(1)), stod(inputs.at(2)) / (100 * stod(inputs.at(3))), stod(inputs.at(3)), stod(inputs.at(4))* stod(inputs.at(3)), stod(inputs.at(5)) / (100 * stod(inputs.at(3)))),
+            Bond(inputs, stod(inputs.at(1)), stod(inputs.at(2)) / (100 * stod(inputs.at(3))), stod(inputs.at(3)), stod(inputs.at(4))* stod(inputs.at(3)), stod(inputs.at(5)) / (100 * stod(inputs.at(3)))),
             callPrice(stod(inputs.at(6))),
             forwardVol(    (stod(inputs.at(7))/100) * sqrt(1/couponFreq)     ),
             timeToCall(stod(inputs.at(8)) * couponFreq){process();};
-
-        CallableBond(const string &n, double f, double cR, double cF, double t, double r, double callP, double fVol, double tToCall) : 
-            Bond(n, f, cR, cF, t, r),
-            callPrice(callP), 
-            forwardVol((fVol/100) * (pow(1 / (cF), 0.5))  ), // fVol is annualized forward volatility.
-            timeToCall(tToCall * cF){process();};
 
         static Item* factory(vector<string> inputs)
         {

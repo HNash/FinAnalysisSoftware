@@ -14,7 +14,7 @@ class Perpetuity : public Item
         //----------------------------------------CTORS & DTORS----------------------------------------
         Perpetuity(){};
         Perpetuity(vector<string> inputs) :
-            Item(inputs[0]),
+            Item(inputs),
             payment(stod(inputs[1])),
             interestRate(stod(inputs[2]) / 100.0) {process();};
         static Item* factory(vector<string> inputs)
