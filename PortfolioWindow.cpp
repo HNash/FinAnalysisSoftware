@@ -1,19 +1,135 @@
 #include "PortfolioWindow.h"
-#include <iostream>
-#include <fstream>
+#include <wx/file.h>
+#include "MainWindow.h"
+
+#if _WIN32
+#define getcwd _getcwd
+#endif // _WIN32
 
 wxBEGIN_EVENT_TABLE(PortfolioWindow, wxFrame)
+	EVT_COMBOBOX(2000, OnPortfolioSelection)
 	EVT_BUTTON(2001, OnCreateClick)
 	EVT_BUTTON(2002, OnCancelClick)
 wxEND_EVENT_TABLE()
 
-PortfolioWindow::PortfolioWindow() : wxFrame(nullptr, wxID_ANY, "Portfolios", wxPoint(300, 400), wxSize(600, 140))
+// Returns current directory
+string PortfolioWindow::get_cwd()
 {
+	const size_t chunkSize = 255;
+	const int maxChunks = 10240; // 2550 KiBs of current path are more than enough
 
+	char stackBuffer[chunkSize]; // Stack buffer for the "normal" case
+	if (getcwd(stackBuffer, sizeof(stackBuffer)) != NULL)
+		return stackBuffer;
+	if (errno != ERANGE)
+	{
+		// It's not ERANGE, so we don't know how to handle it
+		throw std::runtime_error("Cannot determine the current path.");
+		// Of course you may choose a different error reporting method
+	}
+	// Ok, the stack buffer isn't long enough; fallback to heap allocation
+	for (int chunks = 2; chunks < maxChunks; chunks++)
+	{
+		// With boost use scoped_ptr; in C++0x, use unique_ptr
+		// If you want to be less C++ but more efficient you may want to use realloc
+		std::auto_ptr<char> cwd(new char[chunkSize * chunks]);
+		if (getcwd(cwd.get(), chunkSize * chunks) != NULL)
+			return cwd.get();
+		if (errno != ERANGE)
+		{
+			// It's not ERANGE, so we don't know how to handle it
+			throw std::runtime_error("Cannot determine the current path.");
+			// Of course you may choose a different error reporting method
+		}
+	}
+	throw std::runtime_error("Cannot determine the current path; the path is apparently unreasonably long");
 }
 
-PortfolioWindow::PortfolioWindow(wxWindow * parent, vector<string> paramNames, vector<string> params, vector<string> results) : 
+void PortfolioWindow::empty()
+{
+	if (listLabel)
+	{
+		listLabel->Destroy();
+	}
+	if (portfolioList)
+	{
+		portfolioList->Destroy();
+	}
+	if (nameLabel)
+	{
+		nameLabel->Destroy();
+	}
+	if (newPortfolioName)
+	{
+		newPortfolioName->Destroy();
+	}
+	if (createBtn)
+	{
+		createBtn->Destroy();
+	}
+	if (cancelBtn)
+	{
+		cancelBtn->Destroy();
+	}
+	listLabel = nullptr;
+	portfolioList = nullptr;
+	nameLabel = nullptr;
+	newPortfolioName = nullptr;
+	createBtn = nullptr;
+	cancelBtn = nullptr;
+}
+
+PortfolioWindow::PortfolioWindow(wxWindow* parent, PURPOSE p) : 
+	wxFrame(parent, wxID_ANY, "Portfolios", wxPoint(300, 400), wxSize(600, 120)),
+	purpose(p)
+{
+	SetBackgroundColour(wxColour(240, 240, 240));
+	if (purpose == CREATE)
+	{
+		nameLabel = new wxStaticText(this, wxID_ANY, wxString("New Portfolio:"), wxPoint(60, 27), wxSize(100, 20));
+		newPortfolioName = new wxTextCtrl(this, wxID_ANY, wxString(""), wxPoint(210, 25), wxSize(180, 20));
+		createBtn = new wxButton(this, 2001, wxString("Create Portfolio"), wxPoint(410, 25), wxSize(100, 20));
+		cancelBtn = new wxButton(this, 2002, wxString("Cancel"), wxPoint(250, 80), wxSize(100, 20));
+	}
+	else if (purpose == VIEW)
+	{
+		vector<string> portfolioNames;
+
+		// Create a text string, which is used to store lines from the text file
+		wxString namesRaw;
+		wxFile* nameFile = new wxFile(currentDir + wxString("\\portfolios\\names.bat"));
+		if (!nameFile->IsOpened())
+		{
+			return;
+		}
+		nameFile->ReadAll(&namesRaw);
+		nameFile->Close();
+
+		string namesStr = namesRaw.ToStdString();
+		string line;
+		std::stringstream ssin(namesStr);
+		while (std::getline(ssin, line, '\n'))
+		{
+			portfolioNames.push_back(line);
+		}
+
+		int size = static_cast<int>(portfolioNames.size());
+
+		wxString* list = new wxString[size];
+
+		for (int i = 0; i < size; ++i)
+		{
+			list[i] = wxString(portfolioNames[i]);
+		}
+		listLabel = new wxStaticText(this, wxID_ANY, wxString("Existing Portfolio:"), wxPoint(60, 27), wxSize(100, 20));
+		portfolioList = new wxComboBox(this, 2000, wxString("Choose Portfolio"), wxPoint(210, 25), wxSize(300, 20), size, list);
+		cancelBtn = new wxButton(this, 2002, wxString("Cancel"), wxPoint(250, 80), wxSize(100, 20));
+	}
+}
+
+PortfolioWindow::PortfolioWindow(wxWindow * parent, PURPOSE p, vector<string> paramNames, vector<string> params, vector<string> results) : 
 	wxFrame(parent, wxID_ANY, "Portfolios", wxPoint(300, 400), wxSize(600, 140)),
+	purpose(p),
 	parameterNames(paramNames), 
 	parameters(params), 
 	results(results)
@@ -22,18 +138,22 @@ PortfolioWindow::PortfolioWindow(wxWindow * parent, vector<string> paramNames, v
 	vector<string> portfolioNames;
 
 	// Create a text string, which is used to store lines from the text file
+	wxString namesRaw;
+	wxFile* nameFile = new wxFile(currentDir + wxString("\\portfolios\\names.bat"));
+	if (!nameFile->IsOpened())
+	{
+		return;
+	}
+	nameFile->ReadAll(&namesRaw);
+	nameFile->Close();
+
+	string namesStr = namesRaw.ToStdString();
 	string line;
-
-	// Read from the text file
-	ifstream readFile("/portfolios/names.bat");
-
-	// Use a while loop together with the getline() function to read the file line by line
-	while (getline(readFile, line))
+	std::stringstream ssin(namesStr);
+	while (std::getline(ssin, line, '\n'))
 	{
 		portfolioNames.push_back(line);
 	}
-	// Close the file
-	readFile.close();
 
 	int size = static_cast<int>(portfolioNames.size());
 
@@ -44,63 +164,117 @@ PortfolioWindow::PortfolioWindow(wxWindow * parent, vector<string> paramNames, v
 		list[i] = wxString(portfolioNames[i]);
 	}
 
-	listLabel = new wxStaticText(this, wxID_ANY, wxString("Existing Portfolio:"), wxPoint(50, 22), wxSize(100, 20));
-	portfolioList = new wxComboBox(this, 2000, wxString("Choose Portfolio"), wxPoint(200, 20), wxSize(300, 20), size, list);
+	listLabel = new wxStaticText(this, wxID_ANY, wxString("Existing Portfolio:"), wxPoint(60, 22), wxSize(100, 20));
+	portfolioList = new wxComboBox(this, 2000, wxString("Choose Portfolio"), wxPoint(210, 20), wxSize(300, 20), size, list);
 
-	nameLabel = new wxStaticText(this, wxID_ANY, wxString("New Portfolio:"), wxPoint(50, 62), wxSize(100, 20));
-	newPortfolioName = new wxTextCtrl(this, wxID_ANY, wxString(""), wxPoint(200, 60), wxSize(150, 20));
-	createBtn = new wxButton(this, 2001, wxString("Create Portfolio"), wxPoint(400, 60), wxSize(100, 20));
+	nameLabel = new wxStaticText(this, wxID_ANY, wxString("New Portfolio:"), wxPoint(60, 62), wxSize(100, 20));
+	newPortfolioName = new wxTextCtrl(this, wxID_ANY, wxString(""), wxPoint(210, 60), wxSize(180, 20));
+	createBtn = new wxButton(this, 2001, wxString("Create Portfolio"), wxPoint(410, 60), wxSize(100, 20));
 
 	cancelBtn = new wxButton(this, 2002, wxString("Cancel"), wxPoint(250, 100), wxSize(100, 20));
 }
 
 void PortfolioWindow::OnCancelClick(wxCommandEvent& evt)
 {
+	empty();
+	this->Destroy();
+}
+
+void PortfolioWindow::OnPortfolioSelection(wxCommandEvent& evt)
+{
+	wxString portfolioName = portfolioList->GetValue();
+
+	if (purpose == VIEW)
+	{
+		wxString dir = (currentDir + wxString("\\portfolios\\") + portfolioName + wxString(".bat"));
+		((MainWindow*)(this->GetParent()))->displayPortfolio(dir);
+	}
+	else if (purpose == SAVE)
+	{
+		wxFile* portfolioFile = new wxFile(currentDir + wxString("\\portfolios\\") + portfolioName + wxString(".bat"), wxFile::write_append);
+		if (!portfolioFile->IsOpened())
+		{
+			return;
+		}
+		int paramSize = static_cast<int>(parameterNames.size());
+		for (int i = 0; i < paramSize; ++i)
+		{
+			portfolioFile->Write(wxString(parameterNames[i]) + wxString(parameters[i]) + wxString("\n"));
+		}
+		portfolioFile->Write(wxString("\n"));
+		int resultSize = static_cast<int>(results.size());
+		for (int i = 0; i < resultSize; ++i)
+		{
+			portfolioFile->Write(wxString(results[i]) + wxString("\n"));
+		}
+		portfolioFile->Close();
+	}
+	empty();
 	this->Destroy();
 }
 
 void PortfolioWindow::OnCreateClick(wxCommandEvent& evt)
 {
-	// Check if the name exists-----
-	string name = newPortfolioName->GetValue().ToStdString();
+	//-----Check if the name exists-----
+	string newName = newPortfolioName->GetValue().ToStdString();
 
 	// Create a text string, which is used to store lines from the text file
-	string line;
-
-	ifstream nameFile("/portfolios/names.txt");
-	// Use a while loop together with the getline() function to read the file line by line
-	while (getline(nameFile, line))
+	wxString namesRaw;
+	wxFile* nameFile = new wxFile(currentDir + wxString("\\portfolios\\names.bat"));
+	if (!nameFile->IsOpened())
 	{
-		if (line.compare(name) == 0)
+		return;
+	}
+	nameFile->ReadAll(&namesRaw);
+	nameFile->Close();
+
+	string namesStr = namesRaw.ToStdString();
+	vector<string> names;
+	string line;
+	std::stringstream ssin(namesStr);
+	while (std::getline(ssin, line, '\n'))
+	{
+		names.push_back(line);
+	}
+	for (string s : names)
+	{
+		if (s.compare(newName) == 0)
 		{
 			return;
 		}
 	}
-	nameFile.close();
 
-	ofstream nameFileWrite("/portfolios/names.txt");
-	nameFileWrite << name << string("\n");
-	nameFileWrite.close();
-
-	string newPortfolioDir = string("/portfolios/") + name + string(".txt");
-	ofstream portfolioFile;
-	portfolioFile.open(newPortfolioDir);
-
-	int paramSize = static_cast<int>(parameterNames.size());
-	for (int i = 0; i < paramSize; ++i)
+	wxFile* nameFileWrite = new wxFile(currentDir + wxString("\\portfolios\\names.bat"), wxFile::write_append);
+	if (!nameFileWrite->IsOpened())
 	{
-		portfolioFile << parameterNames[i] << parameters[i] << string("\n");
+		return;
 	}
-	
-	portfolioFile << "\n";
-	
-	int resultSize = static_cast<int>(results.size());
-	for (int i = 0; i < resultSize; ++i)
+	nameFileWrite->Write(wxString(newName) + wxString("\n"));
+	nameFileWrite->Close();
+
+	string newPortfolioDir = string("\\portfolios\\") + newName + string(".bat");
+	wxFile* portfolioFile = new wxFile(currentDir + wxString(newPortfolioDir), wxFile::write_append);
+	if (!portfolioFile->IsOpened())
 	{
-		portfolioFile << results[i] << string("\n");
+		return;
 	}
 
-	portfolioFile.close();
-
+	if (purpose == SAVE)
+	{
+		int paramSize = static_cast<int>(parameterNames.size());
+		for (int i = 0; i < paramSize; ++i)
+		{
+			portfolioFile->Write(wxString(parameterNames[i]) + wxString(parameters[i]) + wxString("\n"));
+		}
+		portfolioFile->Write(wxString("\n"));
+		int resultSize = static_cast<int>(results.size());
+		for (int i = 0; i < resultSize; ++i)
+		{
+			portfolioFile->Write(wxString(results[i]) + wxString("\n"));
+		}
+		portfolioFile->Close();
+	}
+	portfolioFile->Close();
+	empty();
 	this->Destroy();
 }

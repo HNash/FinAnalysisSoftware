@@ -24,6 +24,8 @@ class MainWindow : public wxFrame
 		MainWindow();
 		~MainWindow() {};
 
+		void displayPortfolio(wxString);
+
 	private:
 		wxDECLARE_EVENT_TABLE();
 
@@ -55,6 +57,8 @@ class MainWindow : public wxFrame
 		void OnAssetSelection(wxCommandEvent&); // When asset is selected from drop-down menu
 		void OnSaveClick(wxCommandEvent&); // When the save button is clicked
 		void OnComputeClick(wxCommandEvent&); // When the compute button is clicked
+		void OnCreateClick(wxCommandEvent&); // When the create portfolio button is clicked
+		void OnViewClick(wxCommandEvent&); // When the view portfolios button is clicked
 
 		//-------------------------CHILD PORTFOLIO WINDOW & RELEVANT-------------------------
 		PortfolioWindow* portfolioWindow = nullptr; // Actual portfolio window

@@ -1,7 +1,9 @@
 #include "MainWindow.h"
+#include <wx/file.h>
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <sstream>
 
 using std::string;
 
@@ -9,6 +11,8 @@ wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
 	EVT_COMBOBOX(1000, OnAssetSelection)
 	EVT_BUTTON(1001, OnComputeClick)
 	EVT_BUTTON(1002, OnSaveClick)
+	EVT_BUTTON(1003, OnCreateClick)
+	EVT_BUTTON(1004, OnViewClick)
 wxEND_EVENT_TABLE()
 
 //-------------------------CTOR - INITIAL WINDOW SETUP-------------------------
@@ -38,8 +42,8 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Open Asset Pricer", wxPoi
 	assetMenu = new wxComboBox(this, 1000, wxString("Choose Asset"), wxPoint(50, 75), wxSize(250, 20), size, list);
 
 	portfolioSecLabel = new wxStaticText(this, wxID_ANY, wxString("Portfolios:"), wxPoint(50, 175), wxSize(250, 20));
-	portfolioCreate = new wxButton(this, 1002, wxString("Create Portfolio"), wxPoint(50, 200), wxSize(100, 20));
-	portfolioView = new wxButton(this, 1003, wxString("View Portfolios"), wxPoint(200, 200), wxSize(100, 20));
+	portfolioCreate = new wxButton(this, 1003, wxString("Create Portfolio"), wxPoint(50, 200), wxSize(100, 20));
+	portfolioView = new wxButton(this, 1004, wxString("View Portfolios"), wxPoint(200, 200), wxSize(100, 20));
 	portfolioBox = new wxListBox(this, wxID_ANY, wxPoint(50, 250), wxSize(250, 450));
 }
 
@@ -135,6 +139,47 @@ void MainWindow::setupForm(const int count, string* paramNames)
 }
 
 //-------------------------EVENT HANDLERS FOR BUTTONS/COMBOBOX-------------------------
+void MainWindow::OnCreateClick(wxCommandEvent& evt)
+{
+	portfolioWindow = new PortfolioWindow(this, PortfolioWindow::CREATE);
+	portfolioWindow->SetWindowStyle(wxSTAY_ON_TOP);
+	portfolioWindow->Refresh();
+	portfolioWindow->Show();
+}
+
+void MainWindow::OnViewClick(wxCommandEvent& evt)
+{
+	portfolioWindow = new PortfolioWindow(this, PortfolioWindow::VIEW);
+	portfolioWindow->SetWindowStyle(wxSTAY_ON_TOP);
+	portfolioWindow->Refresh();
+	portfolioWindow->Show();
+}
+void MainWindow::displayPortfolio(wxString portfolioDir)
+{
+	wxFile* portfolioFile = new wxFile(portfolioDir);
+	if (!portfolioFile->IsOpened())
+	{
+		return;
+	}
+	wxString contentsRaw;
+	portfolioFile->ReadAll(&contentsRaw);
+	string contents = contentsRaw.ToStdString();
+
+	vector<string> output;
+
+	string line;
+	std::stringstream ssin(contents);
+	while (std::getline(ssin, line, '\n'))
+	{
+		output.push_back(line);
+	}
+
+	for (string s : output)
+	{
+		portfolioBox->AppendString(s);
+	}
+}
+
 void MainWindow::OnAssetSelection(wxCommandEvent& evt)
 {
 	delete asset;
@@ -227,7 +272,7 @@ void MainWindow::OnSaveClick(wxCommandEvent& evt)
 	}
 
 	//portfolioWindow = new PortfolioWindow();
-	portfolioWindow = new PortfolioWindow(this, paramNames, asset->getParams(), asset->getResults());
+	portfolioWindow = new PortfolioWindow(this, PortfolioWindow::SAVE, paramNames, asset->getParams(), asset->getResults());
 	portfolioWindow->SetWindowStyle(wxSTAY_ON_TOP);
 	portfolioWindow->Refresh();
 	portfolioWindow->Show();
