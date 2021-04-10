@@ -45,40 +45,6 @@ string PortfolioWindow::get_cwd()
 	throw std::runtime_error("Cannot determine the current path; the path is apparently unreasonably long");
 }
 
-void PortfolioWindow::empty()
-{
-	if (listLabel)
-	{
-		listLabel->Destroy();
-	}
-	if (portfolioList)
-	{
-		portfolioList->Destroy();
-	}
-	if (nameLabel)
-	{
-		nameLabel->Destroy();
-	}
-	if (newPortfolioName)
-	{
-		newPortfolioName->Destroy();
-	}
-	if (createBtn)
-	{
-		createBtn->Destroy();
-	}
-	if (cancelBtn)
-	{
-		cancelBtn->Destroy();
-	}
-	listLabel = nullptr;
-	portfolioList = nullptr;
-	nameLabel = nullptr;
-	newPortfolioName = nullptr;
-	createBtn = nullptr;
-	cancelBtn = nullptr;
-}
-
 PortfolioWindow::PortfolioWindow(wxWindow* parent, PURPOSE p) : 
 	wxFrame(parent, wxID_ANY, "Portfolios", wxPoint(300, 400), wxSize(600, 120)),
 	purpose(p)
@@ -176,7 +142,6 @@ PortfolioWindow::PortfolioWindow(wxWindow * parent, PURPOSE p, vector<string> pa
 
 void PortfolioWindow::OnCancelClick(wxCommandEvent& evt)
 {
-	empty();
 	this->Destroy();
 }
 
@@ -184,18 +149,15 @@ void PortfolioWindow::OnPortfolioSelection(wxCommandEvent& evt)
 {
 	wxString portfolioName = portfolioList->GetValue();
 
-	if (purpose == VIEW)
-	{
-		wxString dir = (currentDir + wxString("\\portfolios\\") + portfolioName + wxString(".bat"));
-		((MainWindow*)(this->GetParent()))->displayPortfolio(dir);
-	}
-	else if (purpose == SAVE)
+	// If asset is being saved, add it to portfolio file
+	if (purpose == SAVE)
 	{
 		wxFile* portfolioFile = new wxFile(currentDir + wxString("\\portfolios\\") + portfolioName + wxString(".bat"), wxFile::write_append);
 		if (!portfolioFile->IsOpened())
 		{
 			return;
 		}
+		portfolioFile->Write(wxString("-------------------------\n"));
 		int paramSize = static_cast<int>(parameterNames.size());
 		for (int i = 0; i < paramSize; ++i)
 		{
@@ -209,15 +171,17 @@ void PortfolioWindow::OnPortfolioSelection(wxCommandEvent& evt)
 		}
 		portfolioFile->Close();
 	}
-	empty();
+
+	// Then, whether it's an asset being saved or just a port. viewing, display portfolio
+	((MainWindow*)(this->GetParent()))->displayPortfolio(portfolioName, currentDir);
+
 	this->Destroy();
 }
 
 void PortfolioWindow::OnCreateClick(wxCommandEvent& evt)
 {
-	//-----Check if the name exists-----
+	//-----Check if the portfolio name already exists-----
 	string newName = newPortfolioName->GetValue().ToStdString();
-
 	// Create a text string, which is used to store lines from the text file
 	wxString namesRaw;
 	wxFile* nameFile = new wxFile(currentDir + wxString("\\portfolios\\names.bat"));
@@ -244,6 +208,29 @@ void PortfolioWindow::OnCreateClick(wxCommandEvent& evt)
 		}
 	}
 
+	//-----Checking if the name is invalid-----
+	if (newName.length() > 30)
+	{
+		return;
+	}
+	if (newName.compare("") == 0 || newName.compare("names") == 0)
+	{
+		return;
+	}
+	if (newName.find("\"") != -1 ||
+		newName.find("*") != -1 ||
+		newName.find("<") != -1 ||
+		newName.find(">") != -1 ||
+		newName.find("?") != -1 ||
+		newName.find("\\") != -1 ||
+		newName.find("|") != -1 ||
+		newName.find("/") != -1 ||
+		newName.find(":") != -1)
+	{
+		return;
+	}
+
+	//-----Writing new name to file containing all names-----
 	wxFile* nameFileWrite = new wxFile(currentDir + wxString("\\portfolios\\names.bat"), wxFile::write_append);
 	if (!nameFileWrite->IsOpened())
 	{
@@ -259,8 +246,10 @@ void PortfolioWindow::OnCreateClick(wxCommandEvent& evt)
 		return;
 	}
 
+	//-----If the user is creating the portfolio to save an asset, save it-----
 	if (purpose == SAVE)
 	{
+		portfolioFile->Write(wxString("-------------------------\n"));
 		int paramSize = static_cast<int>(parameterNames.size());
 		for (int i = 0; i < paramSize; ++i)
 		{
@@ -275,6 +264,5 @@ void PortfolioWindow::OnCreateClick(wxCommandEvent& evt)
 		portfolioFile->Close();
 	}
 	portfolioFile->Close();
-	empty();
 	this->Destroy();
 }

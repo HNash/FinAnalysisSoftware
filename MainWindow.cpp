@@ -154,9 +154,23 @@ void MainWindow::OnViewClick(wxCommandEvent& evt)
 	portfolioWindow->Refresh();
 	portfolioWindow->Show();
 }
-void MainWindow::displayPortfolio(wxString portfolioDir)
+void MainWindow::displayPortfolio(wxString portfolioName, wxString currentDir)
 {
-	wxFile* portfolioFile = new wxFile(portfolioDir);
+	if (portfolioBox)
+	{
+		portfolioBox->Destroy();
+		portfolioBox = new wxListBox(this, wxID_ANY, wxPoint(50, 250), wxSize(250, 450));
+	}
+	destroyForm();
+
+	// First take name and show it in portfolio display box
+	portfolioBox->AppendString(portfolioName);
+	portfolioBox->AppendString(wxString("-------------------------\n"));
+
+	// This will be the portfolio filepath
+	wxString portfolioPath = (currentDir + wxString("\\portfolios\\") + portfolioName + wxString(".bat"));
+
+	wxFile* portfolioFile = new wxFile(portfolioPath);
 	if (!portfolioFile->IsOpened())
 	{
 		return;
@@ -169,6 +183,7 @@ void MainWindow::displayPortfolio(wxString portfolioDir)
 
 	string line;
 	std::stringstream ssin(contents);
+	
 	while (std::getline(ssin, line, '\n'))
 	{
 		output.push_back(line);

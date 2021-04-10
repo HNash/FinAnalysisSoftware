@@ -24,7 +24,7 @@ class MainWindow : public wxFrame
 		MainWindow();
 		~MainWindow() {};
 
-		void displayPortfolio(wxString);
+		void displayPortfolio(wxString, wxString);
 
 	private:
 		wxDECLARE_EVENT_TABLE();
