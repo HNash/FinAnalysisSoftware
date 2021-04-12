@@ -57,11 +57,6 @@ vector<string> CallableBond::getResults()
     return results;
 }
 
-double CallableBond::getEffectiveDur()
-{
-    return effectiveDur;
-}
-
 //----------------------------------------PROCESS----------------------------------------
 void CallableBond::process()
 {

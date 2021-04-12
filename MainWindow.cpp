@@ -7,6 +7,7 @@
 
 using std::string;
 
+// Event table. Links GUI components to a function that is called when they trigger an event
 wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
 	EVT_COMBOBOX(1000, OnAssetSelection)
 	EVT_BUTTON(1001, OnComputeClick)
@@ -86,11 +87,13 @@ void MainWindow::destroyForm()
 		saveBtn->Destroy();
 		saveBtn = nullptr;
 	}
+	// Deleting "Results:" label (if-statement for safety, first time setup has resultsLabel = nullptr)
 	if (resultsLabel)
 	{
 		resultsLabel->Destroy();
 		resultsLabel = nullptr;
 	}
+	// Deleting results display box (if-statement for safety, first time setup has displayBox = nullptr)
 	if (displayBox)
 	{
 		displayBox->Destroy();
@@ -154,13 +157,16 @@ void MainWindow::OnViewClick(wxCommandEvent& evt)
 	portfolioWindow->Refresh();
 	portfolioWindow->Show();
 }
+// Helper function to show portfolio contents in portfolio display box
 void MainWindow::displayPortfolio(wxString portfolioName, wxString currentDir)
 {
+	// Clearing the portfolio's display box
 	if (portfolioBox)
 	{
 		portfolioBox->Destroy();
 		portfolioBox = new wxListBox(this, wxID_ANY, wxPoint(50, 250), wxSize(250, 450));
 	}
+	// Removing the data entry form
 	destroyForm();
 
 	// First take name and show it in portfolio display box
@@ -176,35 +182,36 @@ void MainWindow::displayPortfolio(wxString portfolioName, wxString currentDir)
 		return;
 	}
 	wxString contentsRaw;
-	portfolioFile->ReadAll(&contentsRaw);
-	string contents = contentsRaw.ToStdString();
+	portfolioFile->ReadAll(&contentsRaw); // Read the contents of the portfolio file into a wxString
+	string contents = contentsRaw.ToStdString(); // Convert the contents to a std::string
 
-	vector<string> output;
+	vector<string> output; // Stores each file of the portfolio line as a separate string
 
 	string line;
 	std::stringstream ssin(contents);
 	
 	while (std::getline(ssin, line, '\n'))
 	{
-		output.push_back(line);
+		output.push_back(line); // Put file contents, string by string, into a vector
 	}
 
 	for (string s : output)
 	{
-		portfolioBox->AppendString(s);
+		portfolioBox->AppendString(s); //Display contents of portfolio file
 	}
 }
 
 void MainWindow::OnAssetSelection(wxCommandEvent& evt)
 {
-	delete asset;
-	paramNames.clear();
+	delete asset; // If a previous asset has been created, delete it
+	paramNames.clear(); // Clear the stored parameters from the prev asset
 
-	// When an asset is selected from the drop down menu, it is stored here
+	// When an asset is selected from the drop down menu, its name/type is stored here
 	string selection = assetMenu->GetValue().ToStdString();
 
 	// The factory pointer is set to the factory function corresponding to the selection
 	// The form is then set up accordingly
+	// Finally, the parameter names are stored in the vector paramNames for passing to the portfolio window
 	if (selection.compare("\u2022Bond") == 0)
 	{
 		factoryPtr = Bond::factory;
@@ -286,7 +293,6 @@ void MainWindow::OnSaveClick(wxCommandEvent& evt)
 		return;
 	}
 
-	//portfolioWindow = new PortfolioWindow();
 	portfolioWindow = new PortfolioWindow(this, PortfolioWindow::SAVE, paramNames, asset->getParams(), asset->getResults());
 	portfolioWindow->SetWindowStyle(wxSTAY_ON_TOP);
 	portfolioWindow->Refresh();

@@ -6,9 +6,3 @@ double Item::normalCDF(double value)
 {
    return 0.5 * erfc(-value * 0.707106781186547524401);
 }
-
-//----------------------------------------GETTERS----------------------------------------
-string Item::getName()
-{
-    return this->name;
-}

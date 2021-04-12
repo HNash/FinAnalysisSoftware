@@ -4,11 +4,9 @@
 #include <cmath>
 #include <string>
 #include <vector>
-#include <map>
 #include "../Item.hpp"
 using std::string;
 using std::vector;
-using std::map;
 using std::stod;
 
 // Bond is an Item, inheriting the name field and save/delete methods
@@ -49,11 +47,6 @@ class Bond : public Item
         void calculateForward(double d); // Used in pricing formulae in derived classes
 
         vector<string> getResults();
-
-        double getSpot();
-        double getForward();
-        double getMacDur();
-        double getModDur();
 
     protected:
         //----------------------------------------FIELDS----------------------------------------

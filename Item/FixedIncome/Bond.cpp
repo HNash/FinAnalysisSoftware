@@ -79,23 +79,3 @@ vector<string> Bond::getResults()
     vec.push_back(string("Modified Duration: ") + std::to_string(modDur));
     return vec;
 }
-
-double Bond::getSpot()
-{
-    return spotPrice;
-}
-
-double Bond::getForward()
-{
-    return forwardPrice;
-}
-
-double Bond::getMacDur()
-{
-    return macDur;
-}
-
-double Bond::getModDur()
-{
-    return modDur;
-}

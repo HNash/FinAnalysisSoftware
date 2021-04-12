@@ -41,7 +41,7 @@ class BondOption : public Item
         static string BONDOPT_PARAM_NAMES[BONDOPT_PARAM_COUNT];
 
         vector<string> getResults();
-        double getSpot();
+        double getSpot(); // DO NOT REMOVE, IMPORTANT FOR CALLABLE BOND
 
     protected:
         double forwardPrice, callPrice, forwardVol, timeToCall, interestRate;

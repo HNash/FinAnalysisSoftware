@@ -36,8 +36,6 @@ class CallableBond : public Bond
         //----------------------------------------GETTERS----------------------------------------
         vector<string> getResults();
 
-        double getEffectiveDur();
-
     protected:
         //----------------------------------------FIELDS----------------------------------------
         double callPrice, timeToCall, forwardVol;

@@ -36,18 +36,3 @@ vector<string> Perpetuity::getResults()
     results.push_back(string("Modified Duration: ") + std::to_string(modDur));
     return results;
 }
-
-double Perpetuity::getSpot()
-{
-    return spotPrice;
-}
-
-double Perpetuity::getMacDur()
-{
-    return macDur;
-}
-
-double Perpetuity::getModDur()
-{
-    return modDur;
-}

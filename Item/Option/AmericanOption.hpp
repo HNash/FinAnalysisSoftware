@@ -28,6 +28,7 @@ class AmericanOption : public VanillaOption
         static constexpr int AMOPT_PARAM_COUNT = 8;
         static string AMOPT_PARAM_NAMES[AMOPT_PARAM_COUNT];
 
+        double getSpot() { return spotPrice; }; // DO NOT REMOVE, IMPORTANT FOR CONVERTIBLE BOND
         protected:
             //----------------------------------------METHODS----------------------------------------
             virtual void calculateSpot();

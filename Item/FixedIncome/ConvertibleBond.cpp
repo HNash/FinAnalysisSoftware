@@ -4,7 +4,7 @@
 using std::string;
 
 string ConvertibleBond::CONVERTIBLE_PARAM_NAMES[9] = { "Name: ", "Face Value: ", "Annual Coupon Rate (%): ", "Coupon Frequency (Per Yr): ",
-            "Time to Maturity (Yrs): ", "Annual Interest Rate (%)", "Current Stock Price: ",  "Conversion Price: ", "Volatility (%): " };
+            "Time to Maturity (Yrs): ", "Annual Interest Rate (%)", "Current Stock Price: ",  "Conversion Price: ", "Annual Volatility (%): " };
 
 //----------------------------------------PRICE CALCULATIONS----------------------------------------
 void ConvertibleBond::calculateSpot()
@@ -52,15 +52,6 @@ vector<string> ConvertibleBond::getResults()
     results.push_back(string("Macaulay Duration: ") + std::to_string(macDur));
     results.push_back(string("Modified Duration: ") + std::to_string(modDur));
     return results;
-}
-double ConvertibleBond::getSpot()
-{
-    return spotPrice;
-}
-
-double ConvertibleBond::getEffectiveDur()
-{
-    return effectiveDur;
 }
 //----------------------------------------PROCESS----------------------------------------
 void ConvertibleBond::process()

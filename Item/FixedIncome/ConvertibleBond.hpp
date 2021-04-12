@@ -37,9 +37,6 @@ class ConvertibleBond : public Bond
 
         //----------------------------------------GETTERS----------------------------------------
         vector<string> getResults();
-
-        double getSpot();
-        double getEffectiveDur();
     
     protected:
         //----------------------------------------FIELDS----------------------------------------

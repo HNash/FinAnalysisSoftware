@@ -28,10 +28,6 @@ class Perpetuity : public Item
         static string PERP_PARAM_NAMES[PERP_PARAM_COUNT];
 
         vector<string> getResults();
-
-        double getSpot();
-        double getMacDur();
-        double getModDur();
     
     protected:
         double payment = 0.0, interestRate;

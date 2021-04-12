@@ -13,6 +13,7 @@ using std::ofstream;
 class PortfolioWindow : public wxFrame
 {
 	public:
+		// Enumeration. New type called PURPOSE, which tells the window the purpose for which it has been opened
 		enum PURPOSE
 		{
 			CREATE = 0,
@@ -27,20 +28,22 @@ class PortfolioWindow : public wxFrame
 	private:
 		wxDECLARE_EVENT_TABLE();
 		
-		string get_cwd();
-		void empty();
+		string get_cwd(); // Retrieves the current directory (cwd = current working directory)
 
-		PURPOSE purpose;
+		PURPOSE purpose; 
 
+		// This is for saving assets to a portfolio
 		vector<string> parameterNames;
 		vector<string> parameters;
 		vector<string> results;
 
-		wxString currentDir = wxString(get_cwd());
+		wxString currentDir = wxString(get_cwd()); // Stores current directory
 
+		// Label and list of portfolio names for existing portfolios
 		wxStaticText* listLabel = nullptr;
 		wxComboBox* portfolioList = nullptr; 
 		
+		// Label, text entry box and save button for creating new portfolios
 		wxStaticText* nameLabel = nullptr;
 		wxTextCtrl* newPortfolioName = nullptr;
 		wxButton* createBtn = nullptr; 

@@ -21,10 +21,6 @@ class Item
         double normalCDF(double);
         
         virtual void process(){};
-        //void save();
-        //void remove();
-
-        string getName();
         vector<string> getParams() { return parameters; }; // Returns the params used to create this Item
         virtual vector<string> getResults() { vector<string> vec; return vec; }; // Implemented by derived classes
         
