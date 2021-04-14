@@ -166,8 +166,6 @@ void MainWindow::displayPortfolio(wxString portfolioName, wxString currentDir)
 		portfolioBox->Destroy();
 		portfolioBox = new wxListBox(this, wxID_ANY, wxPoint(50, 250), wxSize(250, 450));
 	}
-	// Removing the data entry form
-	destroyForm();
 
 	// First take name and show it in portfolio display box
 	portfolioBox->AppendString(portfolioName);
