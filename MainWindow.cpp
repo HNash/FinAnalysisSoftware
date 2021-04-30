@@ -26,7 +26,7 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Open Asset Pricer", wxPoi
 
 	assetCreateLabel = new wxStaticText(this, wxID_ANY, wxString("Create New Asset:"), wxPoint(50, 50), wxSize(250, 20));
 	// Setting up asset menu
-	constexpr int size = 11;
+	constexpr int size = 14;
 	wxString list[size] = {
 		wxString("Fixed Income Assets:"), 
 		wxString("\u2022Bond"),
@@ -38,7 +38,10 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Open Asset Pricer", wxPoi
 		wxString("Options:"),
 		wxString("\u2022American Option"),
 		wxString("\u2022European Option"),
-		wxString("\u2022Bond Option")
+		wxString("\u2022Bond Option"),
+		wxString(""),
+		wxString("Swaps:"),
+		wxString("\u2022Interest Rate Swap"),
 	};
 	assetMenu = new wxComboBox(this, 1000, wxString("Choose Asset"), wxPoint(50, 75), wxSize(250, 20), size, list);
 
@@ -138,6 +141,46 @@ void MainWindow::setupForm(const int count, string* paramNames)
 	else
 	{
 		textCtrls[count - 1] = new wxTextCtrl(this, wxID_ANY, wxString(""), wxPoint(formX + 170, formY + (50 * (count-1))), wxSize(100, 20));
+	}
+}
+
+void MainWindow::setupForm(const int count, vector<string> paramNames)
+{
+	destroyForm(); // Empties all components
+
+	currentParamCount = count; // Global variable indicating number of inputs
+
+	// Position of top-left corner of the entry form
+	// The position of all items inside will be set relative to this
+	formX = 450;
+	formY = (mainHeight / 2) - ((25 * (count + 1)) + 70) - 33; // Centers form vertically. Form height is 50*count + 140
+
+	resultsLabel = new wxStaticText(this, wxID_ANY, wxString("Results"), wxPoint(formX, formY + (50 * count)), wxSize(150, 20));
+	displayBox = new wxListBox(this, wxID_ANY, wxPoint(formX, formY + 25 + (50 * count)), wxSize(270, 140));
+	computeBtn = new wxButton(this, 1001, wxString("Compute"), wxPoint(formX + 170, formY + 195 + (50 * count)), wxSize(100, 20));
+	saveBtn = new wxButton(this, 1002, wxString("Save Asset"), wxPoint(formX, formY + 195 + (50 * count)), wxSize(100, 20));
+
+	// Making labels for input variable text entry boxes
+	for (int i = 0; i < count; ++i)
+	{
+		wxString* convName = new wxString(paramNames[i]); // Gets label names from the param names found in asset class
+		labels[i] = new wxStaticText(this, wxID_ANY, *convName, wxPoint(formX, formY + 2 + (50 * i)), wxSize(150, 40));
+	}
+	// Making text entry boxes
+	// Stops at count-1 because for options, call or put needs a checkbox rather than a textbox
+	for (int i = 0; i < count - 1; ++i)
+	{
+		textCtrls[i] = new wxTextCtrl(this, wxID_ANY, wxString(""), wxPoint(formX + 170, formY + (50 * i)), wxSize(100, 20));
+	}
+
+	// Checks if final param is supposed to be a checkbox (the case for options) and acts accordingly
+	if (paramNames[count - 1].compare("Put? ") == 0)
+	{
+		putCheck = new wxCheckBox(this, wxID_ANY, "", wxPoint(formX + 170, formY + (50 * (count - 1))));
+	}
+	else
+	{
+		textCtrls[count - 1] = new wxTextCtrl(this, wxID_ANY, wxString(""), wxPoint(formX + 170, formY + (50 * (count - 1))), wxSize(100, 20));
 	}
 }
 
@@ -278,6 +321,15 @@ void MainWindow::OnAssetSelection(wxCommandEvent& evt)
 		factoryPtr = BondOption::factory;
 		setupForm(BondOption::BONDOPT_PARAM_COUNT, BondOption::BONDOPT_PARAM_NAMES);
 		for (string s : BondOption::BONDOPT_PARAM_NAMES)
+		{
+			paramNames.push_back(s);
+		}
+	}
+	else if (selection.compare("\u2022Interest Rate Swap") == 0)
+	{
+		factoryPtr = InterestSwap::factory;
+		setupForm(InterestSwap::INTSWAP_PARAM_COUNT, InterestSwap::INTSWAP_PARAM_NAMES);
+		for (string s : InterestSwap::INTSWAP_PARAM_NAMES)
 		{
 			paramNames.push_back(s);
 		}

@@ -12,6 +12,7 @@
 #include "Item/Option/AmericanOption.hpp"
 #include "Item/Option/EuropeanOption.hpp"
 #include "Item/Option/BondOption.hpp"
+#include "Item/Swap/InterestSwap.hpp"
 #include "PortfolioWindow.h"
 
 using std::string;
@@ -46,6 +47,7 @@ class MainWindow : public wxFrame
 
 		// These fill and empty labels and textCtrls, thereby showing the relevant components on-screen
 		void setupForm(const int, string*);
+		void setupForm(const int, vector<string>);
 		void destroyForm(); // Helper function for setupForm()
 
 		//-------------------------FUNDAMENTALS/CONNECTION TO BACKEND-------------------------

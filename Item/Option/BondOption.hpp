@@ -1,5 +1,6 @@
 #ifndef BondOption_hpp
 #define BondOption_hpp
+
 #include "../Item.hpp"
 #include <string>
 #include <vector>
