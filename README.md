@@ -41,14 +41,13 @@
 </ul>
 
 <h2>Authors</h2>
-
-Hussam Elhamy Elnashar <br>
+<b>Hussam Elhamy Elnashar</b>
 <ul>
 <li>Development and implementation of GUI.</li>
 <li>Development and implementation of Fixed Income securities valuation and duration.</li>
 <li>Development and implementation of Option valuation and duration.</li>
 </ul>
-Ahmed Yasser  Figram <br>
+<b>Ahmed Yasser  Figram</b>
 <ul>
 <li>Development of European option valuation.</li>
 </ul>
