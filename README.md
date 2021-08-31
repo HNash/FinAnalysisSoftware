@@ -43,4 +43,12 @@
 <h2>Authors</h2>
 
 Hussam Elhamy Elnashar <br>
+<ul>
+<li>GUI</li>
+<li>Fixed Income securities</li>
+<li>Option valuation implementation</li>
+</ul>
 Ahmed Yasser  Figram <br>
+<ul>
+<li>European option valuation development</li>
+</ul>
