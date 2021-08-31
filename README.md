@@ -11,8 +11,8 @@
 <li>Plain vanilla bonds are valued with a Discounted Cash Flows (DCF) model.</li>
 <li>Callable bonds are valued by subtracting the price of the embedded bond call option, valued with the Black-76 formula, from the corresponding non-callable DCF price of the bond.</li>
 <li>Convertible bonds are valued by adding the price of the embedded American stock call option, valued with the trinomial tree estimate of the Black-Scholes price, to the corresponding non-convertible DCF price of the bond.</li>  
-<li>Flat-rate perpetuities are valued with a simple geometric summation.</li>
 <li>Zero-coupon bonds are valued by discounting the face value payment.</li>
+<li>Flat-rate perpetuities are valued with a simple geometric summation.</li>
 </ul>
 
 <b>Options:</b>
