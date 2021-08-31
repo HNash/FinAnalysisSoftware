@@ -6,6 +6,8 @@
 
 #include <vector>
 #include <string>
+#include <stdlib.h> 
+
 using std::vector;
 using std::string;
 using std::stod;
@@ -29,26 +31,34 @@ class InterestSwap : public Item
 
 		static Item* factory(vector<string> inputs)
 		{
+			
 			RatesWindow* rWin = new RatesWindow((stod(inputs[1]) * stod(inputs[2])), (stod(inputs[1])));
+			rWin->SetWindowStyle(wxSTAY_ON_TOP);
+			rWin->Refresh();
+			rWin->Show();
 
-			while ((rWin->results[stod(inputs[1]) * stod(inputs[2])]).compare("") == 0)
-			{
+			// Problem: The above code opens up a window for the user to enter the reference rates, and
+			// the below code needs to wait for the user to click "Submit" in that window, then execute
 
-			}
-
-			vector<string> rawRates = rWin->results;
+			vector<string> rawRates = rWin->getResults();
 			rWin->Destroy();
 
+			
 			for (string &s : rawRates)
 			{
 				inputs.push_back(std::to_string(stod(s) + stod(inputs[4])));
 			}
-
+			
 			return new InterestSwap(inputs);
-			//Open window for user to enter reference rates for 12*i/couponFreq months ahead, take them and push them into inputs.
-			//Then call the constructor on inputs (look at for loop in constructor).
-			//PROBLEM: How to get factory() to wait for inputs to be pushed back before calling constructor.
+			
+			return nullptr;
 		}
+		static Item* factoryFinish(vector<string> inputs)
+		{
+
+		};
+
+		vector<string> rawRates;
 
 		virtual ~InterestSwap() {};
 
@@ -59,7 +69,6 @@ class InterestSwap : public Item
 		void calculateSpot();
 		void calculateFixedPV();
 		void calculateFloatingPV();
-		
 
 	private:
 		double couponFreq, timeToMaturity, fixedRate;

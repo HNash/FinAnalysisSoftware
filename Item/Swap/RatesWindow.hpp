@@ -15,16 +15,19 @@ class RatesWindow : public wxFrame
 		RatesWindow() {};
 		RatesWindow(double, double);
 
-		vector<string> results = { "" };
+		vector<string> getResults();
+		
+		bool done = false;
 
 	private:
 		wxDECLARE_EVENT_TABLE();
-
-		wxStaticText* prompt;
-		wxStaticText* labels[50];
-		wxTextCtrl* boxes[50];
-		wxButton* submitBtn;
-
+		wxStaticText* prompt = nullptr;
+		wxStaticText* labels[50] = { nullptr };
+		wxTextCtrl* boxes[50] = { nullptr };
+		wxButton* submitBtn = nullptr;
+		
+		vector<string> results;
+		
 		void OnSubmitClick(wxCommandEvent&);
 };
 #endif
