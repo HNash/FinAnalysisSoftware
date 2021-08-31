@@ -44,11 +44,11 @@
 
 Hussam Elhamy Elnashar <br>
 <ul>
-<li>GUI</li>
-<li>Fixed Income securities</li>
-<li>Option valuation implementation</li>
+<li>Development and implementation of GUI.</li>
+<li>Development and implementation of Fixed Income securities valuation and duration.</li>
+<li>Development and implementation of Option valuation and duration.</li>
 </ul>
 Ahmed Yasser  Figram <br>
 <ul>
-<li>European option valuation development</li>
+<li>Development of European option valuation.</li>
 </ul>
