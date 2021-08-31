@@ -44,8 +44,8 @@
 <b>Hussam Elhamy Elnashar</b>
 <ul>
 <li>Development and implementation of GUI.</li>
-<li>Development and implementation of Fixed Income securities valuation and duration.</li>
-<li>Development and implementation of Option valuation and duration.</li>
+<li>Development and implementation of Fixed Income securities valuation and duration calculations.</li>
+<li>Development and implementation of Option valuation and duration calculations.</li>
 </ul>
 <b>Ahmed Yasser  Figram</b>
 <ul>
