@@ -10,6 +10,7 @@ namespace OAP_CS
         protected double spotPrice = 0.0, forwardPrice = 0.0;
         protected double macDur = 0.0, modDur = 0.0;
 
+
         //----------------------------------------CTOR + FACTORY----------------------------------------
 
         public Bond(ArrayList inputs) : base(inputs)
@@ -30,6 +31,7 @@ namespace OAP_CS
             process();
         }
 
+        // Used in Zero Coupon Bond constructor
         public Bond(ArrayList inputs, double f, double cR, double cF, double t, double r) : base(inputs)
         {
             parameterNames = new string[6];

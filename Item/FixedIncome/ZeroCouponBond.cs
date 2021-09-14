@@ -5,16 +5,17 @@ namespace OAP_CS
 {
     class ZeroCouponBond : Bond
     {
+        //----------------------------------------CTOR + FACTORY----------------------------------------
         ZeroCouponBond(ArrayList inputs) : base(inputs, dConvert((string)inputs[1]), 0.0, 1.0, dConvert((string)inputs[2]), dConvert((string)inputs[3])) 
         { 
             process(); 
         }
-        public static Item factory(ArrayList inputs)
+        new public static Item factory(ArrayList inputs)
         {
             return new ZeroCouponBond(inputs);
         }
         //----------------------------------------PRICE CALCULATIONS----------------------------------------
-        void calculateSpot()
+        new void calculateSpot()
         {
             // Simple discounting of face value payment
             spotPrice = face / (Math.Pow((1 + interestRate), timeToMaturity));
@@ -36,7 +37,7 @@ namespace OAP_CS
         }
 
         //----------------------------------------GETTERS----------------------------------------
-        ArrayList getResults()
+        new public ArrayList getResults()
         {
             ArrayList results = new ArrayList();
             results.Add("Price: " + spotPrice);
@@ -46,7 +47,7 @@ namespace OAP_CS
         }
 
         //----------------------------------------PROCESS----------------------------------------
-        void process()
+        new void process()
         {
             calculateSpot();
             calculateMacDur();

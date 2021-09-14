@@ -6,6 +6,8 @@ namespace OAP_CS
     class AmericanOption : VanillaOption
     {
         static ArrayList blank = new ArrayList() { "" };
+
+        //----------------------------------------CTOR & FACTORY----------------------------------------
         public AmericanOption(ArrayList inputs) : base(inputs)
         {
             parameterNames = new string[8];

@@ -7,10 +7,12 @@ namespace OAP_CS
 	{
 		static ArrayList blank = new ArrayList() { "" };
 
+		//----------------------------------------FIELDS----------------------------------------
 		protected double forwardPrice, callPrice, forwardVol, timeToCall, interestRate;
 		protected double callOrPut;
 		protected double spotPrice = 0.0;
 
+		//----------------------------------------CTOR & FACTORY----------------------------------------
 		public BondOption(ArrayList inputs) : base(inputs)
 		{
 			parameterNames = new string[7];

@@ -5,9 +5,11 @@ namespace OAP_CS
 {
     class CallableBond : Bond
     {
+        //----------------------------------------FIELDS----------------------------------------
         protected double callPrice, timeToCall, forwardVol;
         protected double effectiveDur = 0.0;
 
+        //----------------------------------------CTOR + FACTORY----------------------------------------
         public CallableBond(ArrayList inputs) : base(inputs)
         {
             parameterNames = new string[9];
@@ -27,13 +29,13 @@ namespace OAP_CS
             process();
         }
 
-        public static Item factory(ArrayList inputs)
+        new public static Item factory(ArrayList inputs)
         {
             return new CallableBond(inputs);
         }
 
         //----------------------------------------PRICE CALCULATIONS----------------------------------------
-        void calculateSpot()
+        new void calculateSpot()
         {
             // Price of callable = Price of vanilla - Price of embedded option
             base.calculateSpot(); // DO NOT REMOVE. Required in effective duration calculation

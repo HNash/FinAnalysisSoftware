@@ -5,9 +5,11 @@ namespace OAP_CS
 {
     class ConvertibleBond : Bond
     {
+        //----------------------------------------FIELDS----------------------------------------
         protected double stockPrice, conversionP, vol;
         protected double effectiveDur = 0.0;
 
+        //----------------------------------------CTOR + FACTORY----------------------------------------
         // Input array: name, face, coupon rate, coupon frequency, time to maturity, interest rate, stock price, conversion price, volatility
         public ConvertibleBond(ArrayList inputs) : base(inputs)
         {
@@ -27,12 +29,12 @@ namespace OAP_CS
             process();
         }
 
-        public static Item factory(ArrayList inputs)
+        new public static Item factory(ArrayList inputs)
         {
             return new ConvertibleBond(inputs);
         }
         //----------------------------------------PRICE CALCULATIONS----------------------------------------
-        void calculateSpot()
+        new void calculateSpot()
         {
             // Price of convertible = Price of vanilla + Price of embedded option
             spotPrice = (face * couponRate) * ((1 - (Math.Pow((1 + interestRate), (-1 * timeToMaturity)))) / interestRate) + (face / Math.Pow((1 + interestRate), (timeToMaturity)));

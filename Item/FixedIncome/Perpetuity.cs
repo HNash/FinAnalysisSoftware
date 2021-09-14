@@ -6,10 +6,12 @@ namespace OAP_CS
 {
     class Perpetuity : Item
     {
+        //----------------------------------------FIELDS----------------------------------------
         double payment = 0.0, interestRate;
         double spotPrice = 0.0;
         double macDur = 0.0, modDur = 0.0;
 
+        //----------------------------------------CTOR + FACTORY----------------------------------------
         Perpetuity(ArrayList inputs) : base(inputs)
         {
             parameterNames = new string[3];

@@ -5,11 +5,13 @@ namespace OAP_CS
 {
     abstract class VanillaOption : Item
     {
+        //----------------------------------------FIELDS----------------------------------------
         protected double stockPrice, strike, timeToExpiry, interestRate, volatility;
         protected int steps;
         protected double callOrPut; // Multiplier to determine whether payoff uses ST - k or k - ST
         protected double spotPrice = 0.0;
 
+        //----------------------------------------CTOR & FACTORY----------------------------------------
         public VanillaOption(ArrayList inputs) : base(inputs)
         {
             stockPrice = dConvert((string)inputs[1]);
@@ -31,7 +33,7 @@ namespace OAP_CS
             callOrPut = call ? 1.0 : -1.0;
         }
 
-
+        // Helper methods used in valuation
         public double payoff(double sT)
         {
             return fmax((callOrPut * (sT - strike)), 0);
@@ -45,12 +47,9 @@ namespace OAP_CS
             }
             return b;
         }
+
+        // To be implemented by child classes
         public abstract void calculateSpot();
-        
-        double getSpot()
-        {
-            return spotPrice;
-        }
 
         public override ArrayList getResults()
         {

@@ -8,7 +8,7 @@ namespace OAP_CS
     {
         protected string name;
         public ArrayList parameters;
-        public  string[] parameterNames;
+        public string[] parameterNames;
 
         public Item(ArrayList inputs)
         {
@@ -23,7 +23,21 @@ namespace OAP_CS
 
         public static double dConvert(string s)
         {
-            if(s[0] == '-')
+            for (int i = 0; i < s.Length; ++i)
+            {
+                if(s[i] != '0' && s[i] != '1' && s[i] != '2' && s[i] != '3' && s[i] != '4' && s[i] != '5' 
+                    && s[i] != '6' && s[i] != '7' && s[i] != '8' && s[i] != '9' && s[i] != '0' && s[i] != '-' && s[i] != '.')
+                {
+                    return -262144.123456789;
+                }
+            }
+
+            if (s.Length == 0)
+            {
+                return -262144.123456789;
+            }
+
+            if (s[0] == '-')
             {
                 return -1.0;
             }
