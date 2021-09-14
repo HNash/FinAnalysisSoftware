@@ -447,21 +447,6 @@ namespace OAP_CS
             this.portfolioList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.portfolioList.Font = new System.Drawing.Font("Bahnschrift", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.portfolioList.FormattingEnabled = true;
-            this.portfolioList.Items.AddRange(new object[] {
-            "Fixed Income:",
-            "-Bond",
-            "-Callable Bond",
-            "-Convertible Bond",
-            "-Zero Coupon Bond",
-            "-Perpetuity",
-            "",
-            "Options:",
-            "-American Option",
-            "-European Option",
-            "-Bond Option",
-            "",
-            "Swaps:",
-            "-Interest Rate Swap"});
             this.portfolioList.Location = new System.Drawing.Point(58, 49);
             this.portfolioList.Name = "portfolioList";
             this.portfolioList.Size = new System.Drawing.Size(345, 27);
