@@ -18,7 +18,7 @@
 <b>Options:</b>
 
 <ul>
-<li>European options are valued using the relevant Black-Scholes derived formula.</li>
+<li>European options are valued using the relevant Black-Scholes closed form solution.</li>
 <li>American options are valued using a trinomial tree estimate of the Black-Scholes price.</li>
 <li>Bond options are valued using the Black-76 formula.</li>
 </ul>
