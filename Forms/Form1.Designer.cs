@@ -59,8 +59,9 @@ namespace OAP_CS
             this.nameLabel = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.portfolioPage = new System.Windows.Forms.TabPage();
-            this.portfolioDisplay = new System.Windows.Forms.ListBox();
-            this.portfolioList = new System.Windows.Forms.ComboBox();
+            this.deletePortBtn = new System.Windows.Forms.Button();
+            this.loadPortBtn = new System.Windows.Forms.Button();
+            this.createPortBtn = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.assetPage.SuspendLayout();
             this.portfolioPage.SuspendLayout();
@@ -124,6 +125,7 @@ namespace OAP_CS
             this.saveAssetBtn.Text = "Save Asset";
             this.saveAssetBtn.UseVisualStyleBackColor = true;
             this.saveAssetBtn.Visible = false;
+            this.saveAssetBtn.Click += new System.EventHandler(this.saveAssetBtn_Click);
             // 
             // priceAssetBtn
             // 
@@ -421,8 +423,9 @@ namespace OAP_CS
             // portfolioPage
             // 
             this.portfolioPage.BackColor = System.Drawing.Color.Gray;
-            this.portfolioPage.Controls.Add(this.portfolioDisplay);
-            this.portfolioPage.Controls.Add(this.portfolioList);
+            this.portfolioPage.Controls.Add(this.deletePortBtn);
+            this.portfolioPage.Controls.Add(this.loadPortBtn);
+            this.portfolioPage.Controls.Add(this.createPortBtn);
             this.portfolioPage.Location = new System.Drawing.Point(4, 28);
             this.portfolioPage.Name = "portfolioPage";
             this.portfolioPage.Padding = new System.Windows.Forms.Padding(3);
@@ -430,29 +433,35 @@ namespace OAP_CS
             this.portfolioPage.TabIndex = 1;
             this.portfolioPage.Text = "Portfolios";
             // 
-            // portfolioDisplay
+            // deletePortBtn
             // 
-            this.portfolioDisplay.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.portfolioDisplay.Font = new System.Drawing.Font("Bahnschrift", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.portfolioDisplay.FormattingEnabled = true;
-            this.portfolioDisplay.ItemHeight = 19;
-            this.portfolioDisplay.Location = new System.Drawing.Point(58, 121);
-            this.portfolioDisplay.Name = "portfolioDisplay";
-            this.portfolioDisplay.Size = new System.Drawing.Size(688, 555);
-            this.portfolioDisplay.TabIndex = 29;
-            this.portfolioDisplay.Visible = false;
+            this.deletePortBtn.Location = new System.Drawing.Point(310, 400);
+            this.deletePortBtn.Name = "deletePortBtn";
+            this.deletePortBtn.Size = new System.Drawing.Size(179, 30);
+            this.deletePortBtn.TabIndex = 2;
+            this.deletePortBtn.Text = "Delete Portfolio";
+            this.deletePortBtn.UseVisualStyleBackColor = true;
+            this.deletePortBtn.Click += new System.EventHandler(this.deletePortBtn_Click);
             // 
-            // portfolioList
+            // loadPortBtn
             // 
-            this.portfolioList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.portfolioList.Font = new System.Drawing.Font("Bahnschrift", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.portfolioList.FormattingEnabled = true;
-            this.portfolioList.Location = new System.Drawing.Point(58, 49);
-            this.portfolioList.Name = "portfolioList";
-            this.portfolioList.Size = new System.Drawing.Size(345, 27);
-            this.portfolioList.TabIndex = 1;
-            this.portfolioList.Text = "Choose portfolio";
-            this.portfolioList.SelectedIndexChanged += new System.EventHandler(this.portfolioList_SelectedIndexChanged);
+            this.loadPortBtn.Location = new System.Drawing.Point(310, 300);
+            this.loadPortBtn.Name = "loadPortBtn";
+            this.loadPortBtn.Size = new System.Drawing.Size(179, 30);
+            this.loadPortBtn.TabIndex = 1;
+            this.loadPortBtn.Text = "Load Portfolio";
+            this.loadPortBtn.UseVisualStyleBackColor = true;
+            this.loadPortBtn.Click += new System.EventHandler(this.loadPortBtn_Click);
+            // 
+            // createPortBtn
+            // 
+            this.createPortBtn.Location = new System.Drawing.Point(310, 200);
+            this.createPortBtn.Name = "createPortBtn";
+            this.createPortBtn.Size = new System.Drawing.Size(179, 30);
+            this.createPortBtn.TabIndex = 0;
+            this.createPortBtn.Text = "Create New Portfolio";
+            this.createPortBtn.UseVisualStyleBackColor = true;
+            this.createPortBtn.Click += new System.EventHandler(this.createPortBtn_Click);
             // 
             // Form1
             // 
@@ -507,8 +516,9 @@ namespace OAP_CS
         private System.Windows.Forms.Label putCheck;
         private System.Windows.Forms.Button priceAssetBtn;
         private System.Windows.Forms.Button saveAssetBtn;
-        private System.Windows.Forms.ComboBox portfolioList;
-        private System.Windows.Forms.ListBox portfolioDisplay;
+        private Button deletePortBtn;
+        private Button loadPortBtn;
+        private Button createPortBtn;
     }
 }
 

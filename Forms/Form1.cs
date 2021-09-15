@@ -26,10 +26,10 @@ namespace OAP_CS
         ArrayList inputs = new ArrayList();
 
         // Placeholder asset that will be initialized once the user submits their inputs
-        Item asset;
+        public static Item asset;
 
         // Used for portfolios
-        string username;
+        public static string username;
 
         public Form1(string u)
         {
@@ -280,7 +280,7 @@ namespace OAP_CS
                 /* dConvert is a """proprietary""" way to cast strings to doubles because C#s method sucks.
                    The number -262144.123456789 is used to indicate invalid input.
                    I am aware that this is a terrible way to validate input.*/
-                if (Item.dConvert(((TextBox)textBoxes[i]).Text) == -262144.123456789)
+                if (((Label)labels[i]).Visible && Item.dConvert(((TextBox)textBoxes[i]).Text) == -262144.123456789)
                 {
                     // Finds the "name" of the parameter for which the user has entered invalid input and removes the ":" at the end of it
                     string badInputName = (((Label)labels[i]).Text).Remove((((Label)labels[i]).Text).Length - 1, 1);
@@ -318,13 +318,35 @@ namespace OAP_CS
                 resultsBox.Items.Add(""); // Appends new line at the bottom of the display box
             }
         }
-
+        private void saveAssetBtn_Click(object sender, EventArgs e)
+        {
+            Portfolio createPage = new Portfolio(Portfolio.mode.SAVE);
+            createPage.ShowDialog();
+        }
 
         // ------------------------------PORTFOLIOS TAB-----------------------------------
 
         private void portfolioList_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void createPortBtn_Click(object sender, EventArgs e)
+        {
+            Portfolio createPage = new Portfolio(Portfolio.mode.CREATE);
+            createPage.ShowDialog();
+        }
+
+        private void loadPortBtn_Click(object sender, EventArgs e)
+        {
+            Portfolio createPage = new Portfolio(Portfolio.mode.LOAD);
+            createPage.ShowDialog();
+        }
+
+        private void deletePortBtn_Click(object sender, EventArgs e)
+        {
+            Portfolio createPage = new Portfolio(Portfolio.mode.DELETE);
+            createPage.ShowDialog();
         }
     }
 }

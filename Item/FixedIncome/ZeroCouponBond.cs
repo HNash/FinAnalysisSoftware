@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace OAP_CS
 {
+    [Serializable]
     class ZeroCouponBond : Bond
     {
         //----------------------------------------CTOR + FACTORY----------------------------------------

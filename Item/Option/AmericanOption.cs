@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace OAP_CS
 {
+    [Serializable]
     class AmericanOption : VanillaOption
     {
         static ArrayList blank = new ArrayList() { "" };

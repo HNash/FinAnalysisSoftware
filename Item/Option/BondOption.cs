@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace OAP_CS
 {
+	[Serializable]
 	class BondOption : Item
 	{
 		static ArrayList blank = new ArrayList() { "" };

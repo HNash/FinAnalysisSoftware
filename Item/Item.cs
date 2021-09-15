@@ -4,9 +4,10 @@ using System.Collections;
 
 namespace OAP_CS
 {
-    abstract class Item
+    [Serializable]
+    public abstract class Item
     {
-        protected string name;
+        public string name;
         public ArrayList parameters;
         public string[] parameterNames;
 

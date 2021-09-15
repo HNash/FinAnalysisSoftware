@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace OAP_CS
 {
+    [Serializable]
     abstract class VanillaOption : Item
     {
         //----------------------------------------FIELDS----------------------------------------

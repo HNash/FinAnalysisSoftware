@@ -44,7 +44,7 @@ namespace OAP_CS
 
             // Will store the contents of the username/password data file
             string fileText;
-            StreamReader SR = new StreamReader("userdata.bat");
+            StreamReader SR = new StreamReader("data/userdata.bat");
             fileText = SR.ReadToEnd();
             SR.Close();
             SR.Dispose();

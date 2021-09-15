@@ -4,6 +4,7 @@ using System.Collections;
 namespace OAP_CS
 
 {
+    [Serializable]
     class Perpetuity : Item
     {
         //----------------------------------------FIELDS----------------------------------------

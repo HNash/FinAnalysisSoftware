@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace OAP_CS
 {
+    [Serializable]
     class Bond : Item
     {
         //----------------------------------------FIELDS----------------------------------------
@@ -13,6 +14,8 @@ namespace OAP_CS
 
         //----------------------------------------CTOR + FACTORY----------------------------------------
 
+        static ArrayList blank = new ArrayList() { "" };
+        public Bond() : base(blank) { }
         public Bond(ArrayList inputs) : base(inputs)
         {
             parameterNames = new string[6];
