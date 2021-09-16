@@ -10,6 +10,9 @@ namespace OAP_CS
         protected double face, couponRate, couponFreq, timeToMaturity, interestRate;
         protected double spotPrice = 0.0, forwardPrice = 0.0;
         protected double macDur = 0.0, modDur = 0.0;
+        new public static string[] parameterNames = { "Name:", "Face Value: ", "Coupon Rate (%): ",
+                                                        "Coupon Frequency: ", "Time to Maturity (Yrs): ", "Ann. Interest Rate (%): "};
+
 
 
         //----------------------------------------CTOR + FACTORY----------------------------------------
@@ -18,33 +21,17 @@ namespace OAP_CS
         public Bond() : base(blank) { }
         public Bond(ArrayList inputs) : base(inputs)
         {
-            parameterNames = new string[6];
-            parameterNames[0] = (new string("Name:"));
-            parameterNames[1] = (new string("Face Value: "));
-            parameterNames[2] = (new string("Coupon Rate (%): "));
-            parameterNames[3] = (new string("Coupon Frequency: "));
-            parameterNames[4] = (new string("Time to Maturity (Yrs): "));
-            parameterNames[5] = (new string("Ann. Interest Rate (%): "));
-
-            face = dConvert((string)inputs[1]);
-            couponRate = (dConvert((string)inputs[2])) / (100 * (dConvert((string)inputs[3])));
-            couponFreq = dConvert((string)inputs[3]);
-            timeToMaturity = dConvert((string)inputs[4]) * dConvert((string)inputs[3]);
-            interestRate = dConvert((string)inputs[5]) / (100 * dConvert((string)inputs[3]));
+            face = (double)inputs[1];
+            couponFreq = (double)inputs[3];
+            couponRate = (double)inputs[2] / (100.0 * couponFreq);
+            timeToMaturity = (double)inputs[4] * couponFreq;
+            interestRate = (double)inputs[5] / (100.0 * couponFreq);
             process();
         }
 
         // Used in Zero Coupon Bond constructor
         public Bond(ArrayList inputs, double f, double cR, double cF, double t, double r) : base(inputs)
         {
-            parameterNames = new string[6];
-            parameterNames[0] = (new string("Name:"));
-            parameterNames[1] = (new string("Face Value: "));
-            parameterNames[2] = (new string("Coupon Rate (%): "));
-            parameterNames[3] = (new string("Coupon Frequency: "));
-            parameterNames[4] = (new string("Time to Maturity (Yrs): "));
-            parameterNames[5] = (new string("Ann. Interest Rate (%): "));
-
             face = f;
             couponRate = cR/100;
             couponFreq = cF;
@@ -124,9 +111,19 @@ namespace OAP_CS
         }
 
         //----------------------------------------GETTERS----------------------------------------
+        public override string[] getParameters()
+        {
+            string[] paramList = new string[parameterNames.Length];
+            for (int i = 0; i < parameterNames.Length; ++i)
+            {
+                paramList[i] = parameterNames[i] + " " + parameters[i];
+            }
+            return paramList;
+        }
         public override ArrayList getResults()
         {
             ArrayList vec = new ArrayList();
+
             vec.Add("Price: " + spotPrice.ToString());
             vec.Add("Macaulay Duration: " + macDur.ToString());
             vec.Add("Modified Duration: " + modDur.ToString());

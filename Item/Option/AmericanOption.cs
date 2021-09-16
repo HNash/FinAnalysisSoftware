@@ -11,15 +11,6 @@ namespace OAP_CS
         //----------------------------------------CTOR & FACTORY----------------------------------------
         public AmericanOption(ArrayList inputs) : base(inputs)
         {
-            parameterNames = new string[8];
-            parameterNames[0] = (new string("Name:"));
-            parameterNames[1] = (new string("Stock Price: "));
-            parameterNames[2] = (new string("Strike Price: "));
-            parameterNames[3] = (new string("Time to Maturity (Yrs): "));
-            parameterNames[4] = (new string("Ann. Interest Rate (%): "));
-            parameterNames[5] = (new string("Ann. Price Vol. (%): "));
-            parameterNames[6] = (new string("Desired Time Steps: "));
-            parameterNames[7] = (new string("Put?: "));
             process();   
         }
         public AmericanOption(string n, double s0, double k, double t, double r, double vol, int steps, bool call) : base(blank, s0, k, t, r, vol, steps, call)

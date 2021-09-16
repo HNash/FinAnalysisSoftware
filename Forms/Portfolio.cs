@@ -25,35 +25,27 @@ namespace OAP_CS
         {
             CREATE = 0,
             LOAD = 1,
-            SAVE = 2,
-            DELETE = 3
+            EDIT = 2,
+            SAVE = 3,
+            DELETE = 4,
+            DELETEASSET = 5
         }
         private mode pageMode;
-        
+
+        private string selectedPortfolio;
+
         // Used to fill out the combo box (list of portfolio names)
         private string[] portfolios;
-        // Used when mode = LOAD. Contents will be converted to strings and displayed on main page
-        public ArrayList loadedPortfolio;
 
         // Page contents differ based on mode
         public Portfolio(mode m)
         {
-            InitializeComponent();
-
-            // If the user is logged in as a guest, an error dialog is displayed and the page is closed
-            if (Form1.username == "")
-            {
-                this.Visible = false;
-                MessageBox.Show("You are using OAP as a guest. Login or register to use portfolios.", "Error");
-                this.Close();
-                return;
-            }
-
             pageMode = m;
-
+            
             // Sets up page contents based on initialization mode
             if (pageMode == mode.CREATE) // For creation of new portfolio
             {
+                InitializeComponent();
                 mainLabel.Text = "Enter Portfolio Name:";
                 actionBtn.Text = "Create";
                 textBox.Visible = true;
@@ -61,8 +53,9 @@ namespace OAP_CS
                 listBox.Visible = false;
                 this.Size = new Size(550, 310);
             }
-            else if (pageMode == mode.LOAD) // To load an existing portfolio on the main page
+            else if (pageMode == mode.LOAD) // To load an existing portfolio 
             {
+                InitializeComponent();
                 mainLabel.Text = "Select Portfolio:";
                 actionBtn.Text = "Load";
                 textBox.Visible = false;
@@ -71,8 +64,32 @@ namespace OAP_CS
                 this.Size = new Size(550, 980);
 
                 // Fetch portfolio names in user's data directory
-                portfolios = Directory.GetDirectories("data/" + Form1.username);
+                portfolios = Directory.GetDirectories("data/" + MainPage.username);
                 for(int i = 0; i < portfolios.Length; ++i)
+                {
+                    portfolios[i] = portfolios[i].Split("\\")[1];
+                }
+
+                // Clear portfolio combo box and fill it out with fetched portfolio names
+                comboBox.Items.Clear();
+                foreach (string s in portfolios)
+                {
+                    comboBox.Items.Add(s);
+                }
+            }
+            else if (pageMode == mode.EDIT) // To edit an existing portfolio
+            {
+                InitializeComponent();
+                mainLabel.Text = "Select Portfolio:";
+                actionBtn.Text = "Load";
+                textBox.Visible = false;
+                comboBox.Visible = true;
+                listBox.Visible = true;
+                this.Size = new Size(550, 980);
+
+                // Fetch portfolio names in user's data directory
+                portfolios = Directory.GetDirectories("data/" + MainPage.username);
+                for (int i = 0; i < portfolios.Length; ++i)
                 {
                     portfolios[i] = portfolios[i].Split("\\")[1];
                 }
@@ -86,6 +103,7 @@ namespace OAP_CS
             }
             else if (pageMode == mode.SAVE) // For saving of an asset to an existing portfolio
             {
+                InitializeComponent();
                 mainLabel.Text = "Select Portfolio:";
                 actionBtn.Text = "Save";
                 textBox.Visible = false;
@@ -94,7 +112,7 @@ namespace OAP_CS
                 this.Size = new Size(550, 310);
 
                 // Fetch portfolio names in user's data directory
-                portfolios = Directory.GetDirectories("data/" + Form1.username);
+                portfolios = Directory.GetDirectories("data/" + MainPage.username);
                 for (int i = 0; i < portfolios.Length; ++i)
                 {
                     portfolios[i] = portfolios[i].Split("\\")[1];
@@ -107,8 +125,9 @@ namespace OAP_CS
                     comboBox.Items.Add(s);
                 }
             }
-            else // For deletion of a portfolio
+            else if (pageMode == mode.DELETE) // For deletion of a portfolio
             {
+                InitializeComponent();
                 mainLabel.Text = "Select Portfolio:";
                 actionBtn.Text = "Delete";
                 textBox.Visible = false;
@@ -117,7 +136,7 @@ namespace OAP_CS
                 this.Size = new Size(550, 310);
 
                 // Fetch portfolio names in user's data directory
-                portfolios = Directory.GetDirectories("data/" + Form1.username);
+                portfolios = Directory.GetDirectories("data/" + MainPage.username);
                 for (int i = 0; i < portfolios.Length; ++i)
                 {
                     portfolios[i] = portfolios[i].Split("\\")[1];
@@ -130,11 +149,6 @@ namespace OAP_CS
                     comboBox.Items.Add(s);
                 }
             }
-        }
-
-        public ArrayList getPort()
-        {
-            return loadedPortfolio;
         }
 
         // Method to save individual asset as a binary file
@@ -158,7 +172,6 @@ namespace OAP_CS
         {
             using (Stream stream = File.Open(filePath, FileMode.Open))
             {
-                stream.Position = 0;
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 return (Item)binaryFormatter.Deserialize(stream);
             }
@@ -171,21 +184,19 @@ namespace OAP_CS
 
         private void actionBtn_Click(object sender, EventArgs e)
         {
+            // ----- This statement is true if the portfolio window was opened from the "Create Portfolio" button
             if (pageMode == mode.CREATE)
             {
+                //Fetches the name entered by the user into the textbox
                 string name = textBox.Text;
                 
-                if(Form1.username == "")
-                {
-                    MessageBox.Show("You are using OAP as a guest. Login or register to create portfolios.", "Error");
-                    return;
-                }
-                else if (name.Length < 3 || name.Length > 20)
+                // Input validation
+                if (name.Length < 3 || name.Length > 20)
                 {
                     MessageBox.Show("Portfolio name must be between 3 and 20 characters. Please try again.", "Invalid Input");
                     return;
                 }
-                foreach (char c in textBox.Text)
+                foreach (char c in textBox.Text) // Only allows letters, numbers and underscores/dashes
                 {
                     if (!(c >= 48 && c <= 57) && !(c >= 65 && c <= 90) && !(c >= 97 && c <= 122) && !(c == '-') && !(c == '_'))
                     {
@@ -193,61 +204,132 @@ namespace OAP_CS
                         return;
                     }
                 }
-                Directory.CreateDirectory("data/" + Form1.username + "/" + textBox.Text);
+
+                // Makes a new folder in the user's directory for the portfolio
+                Directory.CreateDirectory("data/" + MainPage.username + "/" + textBox.Text);
+
+                // Closes portfolio window
                 this.Visible = false;
                 MessageBox.Show("Portfolio successfully created.", "Success");
                 this.Close();
                 return;
             }
+
+            // ----- This statement is true if the portfolio window was opened from the "Load Existing Portfolio" button
             else if (pageMode == mode.LOAD)
             {
-                loadedPortfolio = new ArrayList();
+                // Clears the listbox used to display contents of portfolio
                 listBox.Items.Clear();
 
+                // Checks that a portfolio has actually been selected
                 if (comboBox.Text == "")
                 {
                     MessageBox.Show("You have not selected a portfolio to load.", "Select Portfolio");
                     return;
                 }
-                string[] assets = Directory.GetFiles("data/" + Form1.username + "/" + comboBox.Text + "/");
-                for (int i = 0; i < assets.Length; ++i)
-                {
-                    assets[i] = assets[i].Split("/")[assets[i].Split("/").Length-1];
-                }
+                
+                // List of paths to asset binary files
+                string[] assets = Directory.GetFiles("data/" + MainPage.username + "/" + comboBox.Text + "/");
+
+                // Loops over paths to asset files and converts them to Item objects, storing them in loadedPortfolio
                 foreach (string s in assets)
                 {
-                    Item i = ReadFromBinaryFile<Item>("data/" + Form1.username + "/" + comboBox.Text + "/" + s);
-                    loadedPortfolio.Add(i);
+                    Item i = ReadFromBinaryFile<Item>(s);
+
+                    string[] inputs = i.getParameters();
+
+                    foreach (string param in inputs)
+                    {
+                        listBox.Items.Add(param);
+                    }
+
+                    listBox.Items.Add("");
+
+                    ArrayList results = i.getResults();
+
+                    foreach (string result in results)
+                    {
+                        listBox.Items.Add(result);
+                    }
+
+                    // Blank lines to separate assets from each other
+                    listBox.Items.Add("");
+                    listBox.Items.Add("");
                 }
-                for (int i = 0; i < loadedPortfolio.Count; ++i)
-                {
-                    for (int j = 0; j < ((Item)(loadedPortfolio[i])).parameterNames.Length; ++j)
-                    {
-                        listBox.Items.Add(((Item)(loadedPortfolio[i])).parameterNames[j] + " " + ((Item)(loadedPortfolio[i])).parameters[j]);
-                    }
-
-                    listBox.Items.Add("");
-
-                    ArrayList results = ((Item)(loadedPortfolio[i])).getResults();
-
-                    foreach(string s in results)
-                    {
-                        listBox.Items.Add(s);
-                    }
-
-                    listBox.Items.Add("");
-                    listBox.Items.Add("");
-                }                
+                comboBox.Text = "";
             }
 
+            // ----- This statement is true if the portfolio window was opened from the "Edit Existing Portfolio" button
+            // CAREFUL: Same as load up until //***
+            else if (pageMode == mode.EDIT)
+            {
+                // Clears the listbox used to display contents of portfolio
+                listBox.Items.Clear();
+
+                // Checks that a portfolio has actually been selected
+                if (comboBox.Text == "")
+                {
+                    MessageBox.Show("You have not selected a portfolio to load.", "Select Portfolio");
+                    return;
+                }
+
+                // List of paths to asset binary files
+                string[] assets = Directory.GetFiles("data/" + MainPage.username + "/" + comboBox.Text);
+
+                // Loops over paths to asset files and converts them to Item objects, storing them in loadedPortfolio
+                foreach (string s in assets)
+                {
+                    Item i = ReadFromBinaryFile<Item>(s);
+
+                    string[] inputs = i.getParameters();
+
+                    foreach (string param in inputs)
+                    {
+                        listBox.Items.Add(param);
+                    }
+
+                    listBox.Items.Add("");
+
+                    ArrayList results = i.getResults();
+
+                    foreach (string result in results)
+                    {
+                        listBox.Items.Add(result);
+                    }
+
+                    // Blank lines to separate assets from each other
+                    listBox.Items.Add("");
+                    listBox.Items.Add("");
+                }
+                //***
+                comboBox.Items.Clear();
+
+                foreach (string s in assets)
+                {
+                    string t = s.Split("\\")[s.Split("\\").Length-1];
+                    t = t.Split(".")[0];
+                    comboBox.Items.Add(t);
+                }
+
+                comboBox.Text = "";
+                mainLabel.Text = "Select Asset to Delete:";
+                actionBtn.Text = "Delete";
+                pageMode = mode.DELETEASSET;
+            }
+
+            // ----- This statement is true if the portfolio window was opened from the "Save Asset" button
             else if (pageMode == mode.SAVE) 
             {
-                string path = "data/" + Form1.username + "/" + comboBox.Text + "/" + Form1.asset.name + ".dat";
+                // Constructs the path string to the asset's soon to be created binary .dat file
+                string path = "data/" + MainPage.username + "/" + comboBox.Text + "/" + MainPage.asset.name + ".dat";
+
+                // Checks if a portfolio has actually been selected for the asset to be saved
                 if (comboBox.Text == "")
                 {
                     MessageBox.Show("You have not selected a portfolio.", "Select Portfolio");
                     return;
                 }
+                // Checks if the file already exists
                 else if (File.Exists(path))
                 {
                     this.Visible = false;
@@ -255,26 +337,37 @@ namespace OAP_CS
                     this.Close();
                     return;
                 }
+                // If checks are passed, write the asset to a new binary .dat file
                 else
                 {
-                    WriteToBinaryFile<Item>(path, Form1.asset);
+                    WriteToBinaryFile<Item>(path, MainPage.asset);
                     this.Visible = false;
                     MessageBox.Show("Asset has been saved successfully.", "Success");
                     this.Close();
                     return;
                 }
             }
-            else
+
+            // ----- This statement is true if the portfolio window was opened from the "Delete Portfolio" button
+            else if (pageMode == mode.DELETE)
             {
+                // Checks if a portfolio has actually been selected for deletion
                 if(comboBox.Text == "")
                 {
                     MessageBox.Show("You have not selected a portfolio to delete.", "Select Portfolio");
                     return;
                 }
 
-                Directory.Delete("data/" + Form1.username + "/" + comboBox.Text);
+                // If the check has passed, the portfolio directory is emptied then deleted
+                string[] portfolioContents = Directory.GetFiles("data/" + MainPage.username + "/" + comboBox.Text);
+                foreach(string s in portfolioContents)
+                {
+                    File.Delete(s);
+                }
+                Directory.Delete("data/" + MainPage.username + "/" + comboBox.Text);
 
-                portfolios = Directory.GetDirectories("data/" + Form1.username + "/");
+                // Refreshes drop down menu of portfolio names by fetching portfolio directory names
+                portfolios = Directory.GetDirectories("data/" + MainPage.username + "/");
 
                 comboBox.Items.Clear();
 
@@ -283,10 +376,73 @@ namespace OAP_CS
                     comboBox.Items.Add(s);
                 }
 
+                // Close portfolio window
                 this.Visible = false;
                 MessageBox.Show("Portfolio successfully deleted.", "Success");
                 this.Close();
                 return;
+            }
+
+            else // If pageMode == DELETEASSET, a secondary mode from EDIT
+            {
+                // First the asset binary file is simply deleted
+                string path = "data/" + MainPage.username + "/" + selectedPortfolio + "/" + comboBox.Text + ".dat";
+                File.Delete(path);
+
+                // Then the remaining asset file names are fetched
+                string[] assets = Directory.GetFiles("data/" + MainPage.username + "/" + selectedPortfolio);
+
+                // Fist the listbox is cleared...
+                listBox.Items.Clear();
+
+                // ...then the listbox is filled with the new portfolio contents
+                foreach (string s in assets)
+                {
+                    Item i = ReadFromBinaryFile<Item>(s);
+
+                    string[] inputs = i.getParameters();
+
+                    foreach (string param in inputs)
+                    {
+                        listBox.Items.Add(param);
+                    }
+
+                    listBox.Items.Add("");
+
+                    ArrayList results = i.getResults();
+
+                    foreach (string result in results)
+                    {
+                        listBox.Items.Add(result);
+                    }
+
+                    // Blank lines to separate assets from each other
+                    listBox.Items.Add("");
+                    listBox.Items.Add("");
+                }
+
+                // The combo box is cleared...
+                comboBox.Items.Clear();
+
+                // ...then it is filled with the remaining asset names
+                foreach (string s in assets)
+                {
+                    string t = s.Split("\\")[s.Split("\\").Length-1];
+                    t = t.Split(".")[0];
+                    comboBox.Items.Add(t);
+                }
+
+                MessageBox.Show("Asset successfully deleted.", "Success");
+                comboBox.Text = "";
+                return;
+            }
+        }
+
+        private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(pageMode != mode.DELETEASSET)
+            {
+                selectedPortfolio = comboBox.Text;
             }
         }
     }

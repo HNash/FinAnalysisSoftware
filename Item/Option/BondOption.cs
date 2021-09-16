@@ -12,25 +12,19 @@ namespace OAP_CS
 		protected double forwardPrice, callPrice, forwardVol, timeToCall, interestRate;
 		protected double callOrPut;
 		protected double spotPrice = 0.0;
+		new public static string[] parameterNames = {"Name:", "Forward Price: ", "Call Price: ",
+														"Ann. Forward Vol. (%): ", "Time to Call (Yrs): ", "Ann. Interest Rate (%): ",
+															"Put?:" };
 
 		//----------------------------------------CTOR & FACTORY----------------------------------------
 		public BondOption(ArrayList inputs) : base(inputs)
 		{
-			parameterNames = new string[7];
-			parameterNames[0] = (new string("Name:"));
-			parameterNames[1] = (new string("Forward Price: "));
-			parameterNames[2] = (new string("Call Price: "));
-			parameterNames[3] = (new string("Ann. Forward Vol. (%): "));
-			parameterNames[4] = (new string("Time to Call (Yrs): "));
-			parameterNames[5] = (new string("Ann. Interest Rate (%): "));
-			parameterNames[6] = (new string("Put?: "));
-
-			forwardPrice = dConvert((string)inputs[1]);
-			callPrice = dConvert((string)inputs[2]);
-			forwardVol = (dConvert((string)inputs[3])) / 100.0;
-			timeToCall = dConvert((string)inputs[4]);
-			interestRate = dConvert((string)inputs[5]) / 100.0;
-			callOrPut = dConvert((string)inputs[6]) == 1.0 ? 1.0 : -1.0;
+			forwardPrice = (double)inputs[1];
+			callPrice = (double)inputs[2];
+			forwardVol = ((double)inputs[3]) / 100.0;
+			timeToCall = (double)inputs[4];
+			interestRate = ((double)inputs[5]) / 100.0;
+			callOrPut = (string)inputs[6] == "1.0" ? 1.0 : -1.0;
 			process();
 		}
 
@@ -61,9 +55,19 @@ namespace OAP_CS
 		}
 
 		//----------------------------------------GETTERS----------------------------------------
+		public override string[] getParameters()
+		{
+			string[] paramList = new string[parameterNames.Length];
+			for (int i = 0; i < parameterNames.Length; ++i)
+			{
+				paramList[i] = parameterNames[i] + " " + parameters[i];
+			}
+			return paramList;
+		}
 		public override ArrayList getResults()
 		{
 			ArrayList vec = new ArrayList();
+
 			vec.Add("Price: " + spotPrice.ToString());
 			return vec;
 		}

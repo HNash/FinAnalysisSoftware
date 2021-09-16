@@ -62,10 +62,10 @@ namespace OAP_CS
             }
             else
             {
-                File.AppendAllText("data/userdata.bat", ("\n" + userEntryBox.Text + "," + Login.ComputeSha256Hash(passEntryBox.Text)));
+                File.AppendAllText("data/userdata.dat", ("\n" + userEntryBox.Text + "," + Login.ComputeSha256Hash(passEntryBox.Text)));
                 Directory.CreateDirectory("data/" + userEntryBox.Text);
                 this.Visible = false;
-                Form1 mainPage = new Form1(userEntryBox.Text);
+                MainPage mainPage = new MainPage(userEntryBox.Text);
                 mainPage.ShowDialog();
                 this.Close();
                 return;

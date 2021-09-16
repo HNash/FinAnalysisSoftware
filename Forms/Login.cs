@@ -24,7 +24,7 @@ namespace OAP_CS
         private void guestBtn_Click(object sender, EventArgs e)
         {
             this.Visible = false; 
-            Form1 mainPage = new Form1("");
+            MainPage mainPage = new MainPage("");
             mainPage.ShowDialog();
             this.Close();
         }
@@ -44,7 +44,7 @@ namespace OAP_CS
 
             // Will store the contents of the username/password data file
             string fileText;
-            StreamReader SR = new StreamReader("data/userdata.bat");
+            StreamReader SR = new StreamReader("data/userdata.dat");
             fileText = SR.ReadToEnd();
             SR.Close();
             SR.Dispose();
@@ -74,7 +74,7 @@ namespace OAP_CS
             else if (userHashCombo.Split(",")[1] == ComputeSha256Hash(inputPass))
             {
                 this.Visible = false; 
-                Form1 mainPage = new Form1(userEntryBox.Text);
+                MainPage mainPage = new MainPage(userEntryBox.Text);
                 mainPage.ShowDialog();
                 this.Close();
             }

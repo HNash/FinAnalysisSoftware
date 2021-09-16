@@ -9,24 +9,16 @@ namespace OAP_CS
         //----------------------------------------FIELDS----------------------------------------
         protected double callPrice, timeToCall, forwardVol;
         protected double effectiveDur = 0.0;
+        new public static string[] parameterNames = { "Name:", "Face Value: ", "Coupon Rate (%): ",
+                                                        "Coupon Frequency: ", "Time to Maturity (Yrs): ", "Ann. Interest Rate (%): ",
+                                                            "Call Price: ", "Ann. Forward Vol.: ", "Time to Call (Yrs): "};
 
         //----------------------------------------CTOR + FACTORY----------------------------------------
         public CallableBond(ArrayList inputs) : base(inputs)
         {
-            parameterNames = new string[9];
-            parameterNames[0] = (new string("Name:"));
-            parameterNames[1] = (new string("Face Value: "));
-            parameterNames[2] = (new string("Coupon Rate (%): "));
-            parameterNames[3] = (new string("Coupon Frequency: "));
-            parameterNames[4] = (new string("Time to Maturity (Yrs): "));
-            parameterNames[5] = (new string("Ann. Interest Rate (%): "));
-            parameterNames[6] = (new string("Call Price: "));
-            parameterNames[7] = (new string("Ann. Forward Vol.: "));
-            parameterNames[8] = (new string("Time to Call (Yrs): "));
-
-            callPrice = dConvert((string)inputs[6]);
-            forwardVol = (dConvert((string)inputs[7])/100) / Math.Sqrt(1/couponFreq);
-            timeToCall = dConvert((string)inputs[8]) * couponFreq;
+            callPrice = (double)inputs[6];
+            forwardVol = (((double)inputs[7])/100.0) / Math.Sqrt(1/couponFreq);
+            timeToCall = (double)inputs[8] * couponFreq;
             process();
         }
 
@@ -75,9 +67,19 @@ namespace OAP_CS
         }
 
         //----------------------------------------GETTERS----------------------------------------
+        public override string[] getParameters()
+        {
+            string[] paramList = new string[parameterNames.Length];
+            for (int i = 0; i < parameterNames.Length; ++i)
+            {
+                paramList[i] = parameterNames[i] + " " + parameters[i];
+            }
+            return paramList;
+        }
         public override ArrayList getResults()
         {
             ArrayList vec = new ArrayList();
+
             vec.Add("Price: " + spotPrice.ToString());
             vec.Add("Macaulay Duration: " + macDur.ToString());
             vec.Add("Modified Duration: " + modDur.ToString());

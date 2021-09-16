@@ -6,8 +6,9 @@ namespace OAP_CS
     [Serializable]
     class ZeroCouponBond : Bond
     {
+        new public static string[] parameterNames = { "Name:", "Face Value:", "Time to Maturity (Yrs)", "Ann. Interest Rate (%):" };
         //----------------------------------------CTOR + FACTORY----------------------------------------
-        ZeroCouponBond(ArrayList inputs) : base(inputs, dConvert((string)inputs[1]), 0.0, 1.0, dConvert((string)inputs[2]), dConvert((string)inputs[3])) 
+        ZeroCouponBond(ArrayList inputs) : base(inputs, (double)inputs[1], 0.0, 1.0, ((double)inputs[2]), ((double)inputs[3])) 
         { 
             process(); 
         }
@@ -38,9 +39,19 @@ namespace OAP_CS
         }
 
         //----------------------------------------GETTERS----------------------------------------
+        public override string[] getParameters()
+        {
+            string[] paramList = new string[parameterNames.Length];
+            for (int i = 0; i < parameterNames.Length; ++i)
+            {
+                paramList[i] = parameterNames[i] + " " + parameters[i];
+            }
+            return paramList;
+        }
         new public ArrayList getResults()
         {
             ArrayList results = new ArrayList();
+
             results.Add("Price: " + spotPrice);
             results.Add("Macaulay Duration: " + macDur);
             results.Add("Modified Duration: " + modDur);

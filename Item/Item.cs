@@ -7,48 +7,58 @@ namespace OAP_CS
     [Serializable]
     public abstract class Item
     {
+        // Used to save assets
         public string name;
         public ArrayList parameters;
-        public string[] parameterNames;
+        public string[] parameterNames = { "" };
 
+        // Parent constructor invoked in child classes
         public Item(ArrayList inputs)
         {
             name = (string)inputs[0];
             parameters = inputs;
         }
 
+        public abstract string[] getParameters();
         public abstract ArrayList getResults();
         public abstract void process();
 
         #region Utility functions
 
+        // Shitty spaghetti method to conver string to double because C# version doesn't work properly
         public static double dConvert(string s)
         {
-            for (int i = 0; i < s.Length; ++i)
+            foreach (char c in s)
             {
-                if(s[i] != '0' && s[i] != '1' && s[i] != '2' && s[i] != '3' && s[i] != '4' && s[i] != '5' 
-                    && s[i] != '6' && s[i] != '7' && s[i] != '8' && s[i] != '9' && s[i] != '0' && s[i] != '-' && s[i] != '.')
+                // Checking if the string contains anything other than numbers, - symbols and decimal points
+                if(!(c >= 48 && c <= 57) && c != 45 && c != 46)
                 {
-                    return -262144.123456789;
+                    return -262144.123456789; // Arbitrary number chosen to indicate invalid input
                 }
             }
 
             if (s.Length == 0)
             {
-                return -262144.123456789;
+                return -262144.123456789; // Arbitrary number chosen to indicate invalid input
             }
 
-            if (s[0] == '-')
-            {
-                return -1.0;
-            }
             double result = 0.0;
 
-            int length = s.Length;
             bool dec = false;
+            bool negative = false;
             int decimalPos = 0;
 
-            for(int i = 0; i < length; ++i)
+            // If the number is negative...
+            if (s[0] == '-')
+            {
+                negative = true; // ...set the boolean to true so that the result is multiplied by -1 in the return statement
+                s = s.Substring(1, s.Length - 1); // The absolute value is processed, the sign will be added back in the return statement
+            }
+
+            int length = s.Length;
+
+            // Find decimal point position
+            for (int i = 0; i < length; ++i)
             {
                 if (s[i] == '.')
                 {
@@ -58,15 +68,16 @@ namespace OAP_CS
                 }
             }
 
+            // The number is in base-10, so each digit is processed then multiplied by the power of 10 to which its position corresponds
             for(int i = 0; i < length; ++i)
             {
                 if(dec)
                 {
-                    if (i < decimalPos)
+                    if (i < decimalPos) // On the LHS of the decimal point, the digit is multiplied by a positive power of 10
                     {
                         result += digitConvert(s[i]) * Math.Pow(10, decimalPos - i - 1);
                     }
-                    else if (i > decimalPos)
+                    else if (i > decimalPos) // On the RHS of the decimal point, the digit is multiplied by a negative power of 10
                     {
                         result += digitConvert(s[i]) * Math.Pow(10, decimalPos - i);
                     }
@@ -77,52 +88,38 @@ namespace OAP_CS
                 }
             }
 
-            return result;
+            return result * (negative ? -1.0 : 1.0);
         }
 
+        // Helper function to assist the spaghetti method above in converting individual digits
         public static double digitConvert(char s)
         {
-            if (s == '0')
+            switch (s)
             {
-                return 0.0;
+                case '0':
+                    return 0.0;
+                case '1':
+                    return 1.0;
+                case '2':
+                    return 2.0;
+                case '3':
+                    return 3.0;
+                case '4':
+                    return 4.0;
+                case '5':
+                    return 5.0;
+                case '6':
+                    return 6.0;
+                case '7':
+                    return 7.0;
+                case '8':
+                    return 8.0;
+                case '9':
+                    return 9.0;
+                    
+                default:
+                    throw new ArgumentException("Error in string to double conversion. Non-digit found");
             }
-            if (s == '1')
-            {
-                return 1.0;
-            }
-            if (s == '2')
-            {
-                return 2.0;
-            }
-            if (s == '3')
-            {
-                return 3.0;
-            }
-            if (s == '4')
-            {
-                return 4.0;
-            }
-            if (s == '5')
-            {
-                return 5.0;
-            }
-            if (s == '6')
-            {
-                return 6.0;
-            }
-            if (s == '7')
-            {
-                return 7.0;
-            }
-            if (s == '8')
-            {
-                return 8.0;
-            }
-            if (s == '9')
-            {
-                return 9.0;
-            }
-            return -1.0;
         }
 
         public double normalCDF(double value)

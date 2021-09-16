@@ -86,6 +86,7 @@ namespace OAP_CS
             this.comboBox.Name = "comboBox";
             this.comboBox.Size = new System.Drawing.Size(293, 23);
             this.comboBox.TabIndex = 6;
+            this.comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
             // 
             // listBox
             // 

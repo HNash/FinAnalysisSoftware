@@ -11,17 +11,20 @@ namespace OAP_CS
         protected int steps;
         protected double callOrPut; // Multiplier to determine whether payoff uses ST - k or k - ST
         protected double spotPrice = 0.0;
+        new public static string[] parameterNames = { "Name:", "Stock Price:", "Strike Price:", 
+                                                        "Time to Expiry (Yrs):", "Ann. Interest Rate (%):", "Ann. Price Vol. (%):", 
+                                                            "Desired Time Steps:", "Put?:"};
 
         //----------------------------------------CTOR & FACTORY----------------------------------------
         public VanillaOption(ArrayList inputs) : base(inputs)
         {
-            stockPrice = dConvert((string)inputs[1]);
-            strike = dConvert((string)inputs[2]);
-            timeToExpiry = dConvert((string)inputs[3]);
-            interestRate = dConvert((string)inputs[4]) / 100;
-            volatility = dConvert((string)inputs[5]) / 100;
-            steps = (int)dConvert((string)inputs[6]);
-            callOrPut = dConvert((string)inputs[7]) == 1.0 ? 1.0 : -1.0;
+            stockPrice = (double)inputs[1];
+            strike = (double)inputs[2];
+            timeToExpiry = (double)inputs[3];
+            interestRate =(double)inputs[4] / 100.0;
+            volatility = (double)inputs[5] / 100.0;
+            steps = (int)((double)inputs[6]);
+            callOrPut = (string)inputs[7] == "1.0" ? 1.0 : -1.0;
         }
         public VanillaOption(ArrayList n, double s0, double k, double t, double r, double vol, int steps, bool call) : base(n)
         {
@@ -52,9 +55,19 @@ namespace OAP_CS
         // To be implemented by child classes
         public abstract void calculateSpot();
 
+        public override string[] getParameters()
+        {
+            string[] paramList = new string[parameterNames.Length];
+            for (int i = 0; i < parameterNames.Length; ++i)
+            {
+                paramList[i] = parameterNames[i] + " " + parameters[i];
+            }
+            return paramList;
+        }
         public override ArrayList getResults()
         {
             ArrayList results = new ArrayList();
+
             results.Add("Price: " + spotPrice);
             return results;
         }

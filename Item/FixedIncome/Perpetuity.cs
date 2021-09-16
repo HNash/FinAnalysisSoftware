@@ -11,17 +11,13 @@ namespace OAP_CS
         double payment = 0.0, interestRate;
         double spotPrice = 0.0;
         double macDur = 0.0, modDur = 0.0;
+        new public static string[] parameterNames = { "Name:", "Payment:", "Ann. Interest Rate (%):" };
 
         //----------------------------------------CTOR + FACTORY----------------------------------------
         Perpetuity(ArrayList inputs) : base(inputs)
         {
-            parameterNames = new string[3];
-            parameterNames[0] = (new string("Name:"));
-            parameterNames[1] = (new string("Payment:"));
-            parameterNames[2] = (new string("Ann. Interest Rate (%):"));
-
-            payment = dConvert((string)inputs[1]);
-            interestRate = (dConvert((string)inputs[2])) / 100.0;
+            payment = (double)inputs[1];
+            interestRate = (double)inputs[2] / 100.0;
             process();
         }
         public static Item factory(ArrayList inputs)
@@ -55,9 +51,19 @@ namespace OAP_CS
         }
 
         //----------------------------------------GETTERS----------------------------------------
+        public override string[] getParameters()
+        {
+            string[] paramList = new string[parameterNames.Length];
+            for (int i = 0; i < parameterNames.Length; ++i)
+            {
+                paramList[i] = parameterNames[i] + " " + parameters[i];
+            }
+            return paramList;
+        }
         public override ArrayList getResults()
         {
             ArrayList results = new ArrayList();
+
             results.Add("Price: " + spotPrice);
             results.Add("Macaulay Duration: " + macDur);
             results.Add("Modified Duration: " + modDur);

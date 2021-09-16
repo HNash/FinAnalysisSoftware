@@ -9,24 +9,17 @@ namespace OAP_CS
         //----------------------------------------FIELDS----------------------------------------
         protected double stockPrice, conversionP, vol;
         protected double effectiveDur = 0.0;
+        new public static string[] parameterNames = { "Name:", "Face Value: ", "Coupon Rate (%): ",
+                                                        "Coupon Frequency: ", "Time to Maturity (Yrs): ", "Ann. Interest Rate (%): ",
+                                                            "Stock Price: ", "Conversion Price: ", "Ann. Price Vol. (%): "};
 
         //----------------------------------------CTOR + FACTORY----------------------------------------
         // Input array: name, face, coupon rate, coupon frequency, time to maturity, interest rate, stock price, conversion price, volatility
         public ConvertibleBond(ArrayList inputs) : base(inputs)
         {
-            parameterNames = new string[9];
-            parameterNames[0] = (new string("Name:"));
-            parameterNames[1] = (new string("Face Value: "));
-            parameterNames[2] = (new string("Coupon Rate (%): "));
-            parameterNames[3] = (new string("Coupon Frequency: "));
-            parameterNames[4] = (new string("Time to Maturity (Yrs): "));
-            parameterNames[5] = (new string("Ann. Interest Rate (%): "));
-            parameterNames[6] = (new string("Stock Price: "));
-            parameterNames[7] = (new string("Conversion Price: "));
-            parameterNames[8] = (new string("Ann. Price Vol. (%): "));
-            stockPrice = dConvert((string)inputs[6]);
-            conversionP = dConvert((string)inputs[7]);
-            vol = dConvert((string)inputs[8]);
+            stockPrice = (double)inputs[6];
+            conversionP = (double)inputs[7];
+            vol = (double)inputs[8];
             process();
         }
 
@@ -72,9 +65,19 @@ namespace OAP_CS
             effectiveDur = (vDown - vUp) / (2 * spotPrice * 0.005);
         }
         //----------------------------------------GETTERS----------------------------------------
+        public override string[] getParameters()
+        {
+            string[] paramList = new string[parameterNames.Length];
+            for (int i = 0; i < parameterNames.Length; ++i)
+            {
+                paramList[i] = parameterNames[i] + " " + parameters[i];
+            }
+            return paramList;
+        }
         public override ArrayList getResults()
         {
             ArrayList results = new ArrayList();
+
             results.Add("Price: " + spotPrice);
             results.Add("Effective Duration: " + effectiveDur);
             return results;

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 namespace OAP_CS
 {
-    partial class Form1
+    partial class MainPage
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@ namespace OAP_CS
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainPage));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.assetPage = new System.Windows.Forms.TabPage();
             this.saveAssetBtn = new System.Windows.Forms.Button();
@@ -62,6 +62,7 @@ namespace OAP_CS
             this.deletePortBtn = new System.Windows.Forms.Button();
             this.loadPortBtn = new System.Windows.Forms.Button();
             this.createPortBtn = new System.Windows.Forms.Button();
+            this.editPortBtn = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.assetPage.SuspendLayout();
             this.portfolioPage.SuspendLayout();
@@ -423,6 +424,7 @@ namespace OAP_CS
             // portfolioPage
             // 
             this.portfolioPage.BackColor = System.Drawing.Color.Gray;
+            this.portfolioPage.Controls.Add(this.editPortBtn);
             this.portfolioPage.Controls.Add(this.deletePortBtn);
             this.portfolioPage.Controls.Add(this.loadPortBtn);
             this.portfolioPage.Controls.Add(this.createPortBtn);
@@ -435,23 +437,23 @@ namespace OAP_CS
             // 
             // deletePortBtn
             // 
-            this.deletePortBtn.Location = new System.Drawing.Point(310, 400);
+            this.deletePortBtn.Location = new System.Drawing.Point(310, 425);
             this.deletePortBtn.Name = "deletePortBtn";
             this.deletePortBtn.Size = new System.Drawing.Size(179, 30);
             this.deletePortBtn.TabIndex = 2;
             this.deletePortBtn.Text = "Delete Portfolio";
             this.deletePortBtn.UseVisualStyleBackColor = true;
-            this.deletePortBtn.Click += new System.EventHandler(this.deletePortBtn_Click);
+            this.deletePortBtn.Click += new System.EventHandler(this.portBtn_Click);
             // 
             // loadPortBtn
             // 
-            this.loadPortBtn.Location = new System.Drawing.Point(310, 300);
+            this.loadPortBtn.Location = new System.Drawing.Point(310, 275);
             this.loadPortBtn.Name = "loadPortBtn";
             this.loadPortBtn.Size = new System.Drawing.Size(179, 30);
             this.loadPortBtn.TabIndex = 1;
-            this.loadPortBtn.Text = "Load Portfolio";
+            this.loadPortBtn.Text = "View Existing Portfolio";
             this.loadPortBtn.UseVisualStyleBackColor = true;
-            this.loadPortBtn.Click += new System.EventHandler(this.loadPortBtn_Click);
+            this.loadPortBtn.Click += new System.EventHandler(this.portBtn_Click);
             // 
             // createPortBtn
             // 
@@ -461,9 +463,19 @@ namespace OAP_CS
             this.createPortBtn.TabIndex = 0;
             this.createPortBtn.Text = "Create New Portfolio";
             this.createPortBtn.UseVisualStyleBackColor = true;
-            this.createPortBtn.Click += new System.EventHandler(this.createPortBtn_Click);
+            this.createPortBtn.Click += new System.EventHandler(this.portBtn_Click);
             // 
-            // Form1
+            // editPortBtn
+            // 
+            this.editPortBtn.Location = new System.Drawing.Point(312, 350);
+            this.editPortBtn.Name = "editPortBtn";
+            this.editPortBtn.Size = new System.Drawing.Size(179, 30);
+            this.editPortBtn.TabIndex = 3;
+            this.editPortBtn.Text = "Edit Existing Portfolio";
+            this.editPortBtn.UseVisualStyleBackColor = true;
+            this.editPortBtn.Click += new System.EventHandler(this.portBtn_Click);
+            // 
+            // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -474,7 +486,7 @@ namespace OAP_CS
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(900, 860);
             this.MinimumSize = new System.Drawing.Size(900, 860);
-            this.Name = "Form1";
+            this.Name = "MainPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Open Asset Pricer";
             this.tabControl.ResumeLayout(false);
@@ -519,6 +531,7 @@ namespace OAP_CS
         private Button deletePortBtn;
         private Button loadPortBtn;
         private Button createPortBtn;
+        private Button editPortBtn;
     }
 }
 
