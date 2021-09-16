@@ -43,9 +43,9 @@
 <h2>Authors</h2>
 <b>Hussam Elhamy Elnashar</b>
 <ul>
-<li>Development and implementation of portfolio functionality.</li>
 <li>Development and implementation of Fixed Income securities valuation and duration calculations.</li>
 <li>Development and implementation of Option valuation and duration calculations.</li>
+<li>Development and implementation of portfolio functionality.</li>
 <li>Development and implementation of GUI.</li>
 </ul>
 <b>Ahmed Yasser  Figram</b>
