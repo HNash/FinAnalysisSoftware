@@ -1,7 +1,7 @@
 <img src="logo.png" alt="Logo" class="center">
 
 <h2>Download</h2>
-<a href="https://github.com/HNash/OpenAssetPricer/releases/download/v0.7/v0.7.zip">Download link</a> for the latest pre-release (v0.7).
+<a href="https://github.com/HNash/OpenAssetPricer/releases/download/v0.7/v0.7.zip">Download link</a> for the latest release (v0.7).
 
 <h2>Valuation Methods</h2>
 
@@ -41,14 +41,14 @@
 </ul>
 
 <h2>Authors</h2>
-<b>Hussam Elhamy Elnashar</b>
+<b>HNash</b>
 <ul>
 <li>Development and implementation of Fixed Income securities valuation and duration calculations.</li>
 <li>Development and implementation of Option valuation and duration calculations.</li>
 <li>Development and implementation of portfolio functionality.</li>
 <li>Development and implementation of GUI.</li>
 </ul>
-<b>Ahmed Yasser  Figram</b>
+<b>Yasserini</b>
 <ul>
 <li>Development of European option valuation.</li>
 </ul>
